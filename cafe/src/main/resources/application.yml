@@ -1,0 +1,48 @@
+server.port: 8001
+
+spring:
+  application:
+    name: cafe
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/cafe
+    username: root
+    password: 1234
+  jpa:
+    hibernate.ddl-auto: update
+    properties.hibernate:
+      show_sql: true
+      format_sql: true
+  main:
+    debug: true
+
+management:
+  info:
+    git:
+      mode: full
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  tracing:
+    enabled: false
+    sampling:
+      probability: 1.0
+
+springdoc:
+  swagger-ui:
+    path: /docs
+    operationsSorter: method
+
+swagger:
+  api-gateway-url: http://localhost:8000/${spring.application.name}
+
+logging.level.org:
+  springframework.security: trace
+  hibernate.sql: debug
+
+jwt:
+  keys-uri: http://localhost:8000/oauth/.well-known/jwks.json
