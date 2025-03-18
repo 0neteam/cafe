@@ -1,4 +1,4 @@
-package com.java.cafe.cafeEach;
+package com.java.cafe.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 @Entity
-@Table(name = "cafePost")
+@Table(name = "post")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CafePost {
+public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,10 +22,7 @@ public class CafePost {
 
     @ManyToOne
     @JoinColumn(name="menuNo", referencedColumnName = "no", nullable = false)
-    CafeMenu cafeMenu;
-
-    @Column(nullable = false)
-    private Integer writer;
+    Menu menu;
 
     @Column(nullable = false, length = 100)
     private String title;
@@ -34,7 +31,19 @@ public class CafePost {
     private String content;
 
     @Column(nullable = false)
-    private Date firstDate;
-    private Date lastDate;
+    private Date regUserNo;
+
+    @Column(nullable = false)
+    private Date regDate;
+
+    @Column
+    private Date modUserNo;
+    private Date modDate;
+
+    @Column(nullable = false)
+    private Integer viewCount;
+
+    @Column(nullable = false)
+    private char useYN;
 
 }

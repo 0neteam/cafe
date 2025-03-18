@@ -1,5 +1,6 @@
-package com.java.cafe.cafehome;
+package com.java.cafe.repository;
 
+import com.java.cafe.entity.Cafe;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
