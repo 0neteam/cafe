@@ -1,37 +1,40 @@
-package com.java.cafe.cafeEach;
+package com.java.cafe.entity;
 
-import com.java.cafe.cafehome.Cafe;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Entity
-@Table(name = "cafeMenu")
+@Table(name = "menu")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CafeMenu {
+public class Menu {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer no;
 
     @ManyToOne
-    @JoinColumn(name="cafeNo", referencedColumnName = "no", nullable = false)
-    Cafe cafe;
+    @JoinColumn(name="boardNo", referencedColumnName = "no", nullable = false)
+    Board board;
 
-    @Column(nullable = false, length = 30)
-    private String grp;
+    @Column(nullable = false)
+    private Integer orderNo;
+
+    @Column(nullable = false)
+    private Integer depth;
 
     @Column(nullable = false, length = 30)
     private String name;
 
     @Column(nullable = false)
-    private Integer orderNo;
+    private Integer ref;
+
+    @Column(nullable = false)
+    private Integer useYN;
 
 }

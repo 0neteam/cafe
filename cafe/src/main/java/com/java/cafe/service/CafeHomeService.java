@@ -1,4 +1,4 @@
-package com.java.cafe.cafehome;
+package com.java.cafe.service;
 
 public class CafeHomeService {
 }
