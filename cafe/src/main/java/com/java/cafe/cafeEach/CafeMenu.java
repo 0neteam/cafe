@@ -1,5 +1,6 @@
 package com.java.cafe.cafeEach;
 
+import com.java.cafe.cafehome.Cafe;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +20,10 @@ public class CafeMenu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer no;
+
+    @ManyToOne
+    @JoinColumn(name="cafeNo", referencedColumnName = "no", nullable = false)
+    Cafe cafe;
 
     @Column(nullable = false, length = 30)
     private String grp;

@@ -21,7 +21,7 @@ public class CafePost {
     private Integer no;
 
     @ManyToOne
-    @JoinColumn(name="cafeNo", referencedColumnName = "no", nullable = false)
+    @JoinColumn(name="menuNo", referencedColumnName = "no", nullable = false)
     CafeMenu cafeMenu;
 
     @Column(nullable = false)
