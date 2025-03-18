@@ -19,7 +19,107 @@
         }
     </style>
 </head>
+<header th:fragment="header" class="py-2 container" style="background-color: transparent;">
+    <div>
+      <div class="d-flex align-items-center gap-3">
+        <a class="nav-link active text-dark" href="#">mainLOGO</a>
+  
+        <form class="flex-grow-1" role="search">
+          <div class="input-group">
+            <input type="text" class="form-control border-warning" placeholder="검색어를 입력해주세요" id="search1">
+            <button class="btn btn-warning text-dark" type="submit">검색</button>
+          </div>
+        </form>
+  
+        <div class="d-flex align-items-center gap-3 ms-auto">
+          <a class="nav-link active text-dark" href="#">카페홈</a>
+          <button class="nav-link active text-dark btn btn-link p-0" id="showSelectButton">가입한카페</button>
+          <button class="nav-link active text-dark btn btn-link p-0">쪽지</button>
+          <a class="nav-link active text-dark" href="#">마이페이지</a>
+          <button class="nav-link active text-dark btn btn-link p-0">로그아웃</button>
+          <a class="nav-link active text-dark" href="#">로그인</a>
+        </div>
+      </div>
+      <hr class="border-secondary">
+    </div>
+</header>
+<nav th:fragment="banner" class="container">
+    <a href="#!">
+        <div class="banner" style="background-image: url('');">
+        </div>
+    </a>
+</nav>
+<aside th:fragment="aside" id="side" class="position-fixed top-0 start-0 vh-100 overflow-auto" style="width: 280px; z-index: 1040; padding: 20px;">
+	<div class="card" style="width: 100%; margin-bottom: 20px;">
+		<div class="card-body">
+		<div class="d-flex justify-content-center gap-1 mb-3" style="white-space: nowrap;">
+			<button class="btn btn-group">카페정보</button>
+			<div class="border-end mx-2"></div>
+			<button class="btn btn-group">나의활동</button>
+		</div>
+		<hr class="border-secondary">
+		<div>
+			<a class="nav-link bi bi-person-check-fill no-link text-nowrap" href="#!"> 운영자이름</a>
+			<p class="bi bi-calendar text-nowrap"> 개설일자</p>
+		</div>
+		<hr class="border-secondary">
+		<div>
+			<a class="nav-link container border my-1 py-2 d-inline-block text-center" href="#!">카페가입</a>
+			<a class="nav-link container border my-1 py-2 d-inline-block text-center" href="#!">카페글쓰기</a>
+		</div>
+		</div>
+	</div>
+	<div class="card" style="width: 100%; margin-bottom: 20px;">
+		<div class="card-body">
+		<div class="d-flex justify-content-center gap-1 mb-3" style="white-space: nowrap;">
+			<button class="btn btn-group">카페정보</button>
+			<div class="border-end mx-2"></div>
+			<button class="btn btn-group">나의활동</button>
+		</div>
+		<hr class="border-secondary">
+		<div>
+			<a class="nav-link bi bi-person-check-fill no-link text-nowrap" href="#!"> 운영자이름</a>
+			<p class="bi bi-calendar text-nowrap"> 개설일자</p>
+		</div>
+		<hr class="border-secondary">
+		<div>
+			<a class="nav-link container border my-1 py-2 d-inline-block text-center" href="#!">카페가입</a>
+			<a class="nav-link container border my-1 py-2 d-inline-block text-center" href="#!">카페글쓰기</a>
+		</div>
+		</div>
+	</div>
 
+	<form class="flex-grow-1" role="search">
+		<div class="input-group">
+		<input type="text" class="form-control border-warning" id="search1">
+		<button class="btn btn-warning text-dark" type="submit">검색</button>
+		</div>
+	</form> 
+	
+	<div class="list-group list-group-flush">
+	<a class="list-group-item list-group-item-action" data-bs-toggle="collapse" href="#menuGroup1" aria-expanded="true">menu1</a>
+	<div class="collapse show" id="menuGroup1">
+		<div class="border-bottom">
+		<a class="list-group-item ps-4" data-bs-toggle="collapse" href="#!" aria-expanded="true">menu1-1</a>
+		<a class="list-group-item ps-4" data-bs-toggle="collapse" href="#!" aria-expanded="true">menu1-2</a>
+		</div>
+	</div>
+	<a class="list-group-item list-group-item-action" data-bs-toggle="collapse" href="#menuGroup2" aria-expanded="true">menu2</a>
+	<div class="collapse show" id="menuGroup2">
+		<div class="border-bottom">
+		<a class="list-group-item ps-4" data-bs-toggle="collapse" href="#!" aria-expanded="true">menu2-1</a>
+		<a class="list-group-item ps-4" data-bs-toggle="collapse" href="#!" aria-expanded="true">menu2-2</a>
+		</div>
+	</div>
+	<a class="list-group-item list-group-item-action" data-bs-toggle="collapse" href="#menuGroup3" aria-expanded="true">menu3</a>
+	<div class="collapse show" id="menuGroup3">
+		<div class="border-bottom">
+		<a class="list-group-item ps-4" data-bs-toggle="collapse" href="#!" aria-expanded="true">menu3-1</a>
+		<a class="list-group-item ps-4" data-bs-toggle="collapse" href="#!" aria-expanded="true">menu3-2</a>
+		</div>
+	</div>
+	</div>
+</aside>
 <body>
     <div class="container my-2">
         <div class="d-flex justify-content-between align-items-center my-4">
@@ -36,5 +136,12 @@
         </form>
     </div>
 </body>
-
+<footer th:fragment="footer" class="py-2 container" style="background-color: transparent;">
+    <hr class="border-secondary">
+    <div class="d-flex align-items-center justify-content-start">
+        <p class="fw-bold mb-0">카페명</p>
+        <a class="nav-link active text-dark ms-3" href="#">cafe.0neteam.co.kr/카페주소</a>
+        <a class="nav-link active text-dark ms-3 ms-auto" href="#">카페홈LOGO</a>
+    </div>
+</footer>
 </html>
