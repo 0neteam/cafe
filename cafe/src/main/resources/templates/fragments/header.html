@@ -6,15 +6,15 @@
     <div class="d-flex align-items-center gap-3">
       <a class="nav-link active text-dark" href="#">mainLOGO</a>
 
-      <form class="flex-grow-1" role="search">
-        <div class="input-group">
-          <input type="text" class="form-control border-warning" placeholder="검색어를 입력해주세요" id="search1">
+      <form method="GET" action="/cafe/home/search" class="flex-grow-1" id="cafeSearch" name="cafeSearch">
+        <div class="input-group d-flex align-items-center">
+          <input name="keyward" type="text" class="form-control border-warning" placeholder="검색어를 입력해주세요">
           <button class="btn btn-warning text-dark" type="submit">검색</button>
         </div>
       </form>
 
       <div class="d-flex align-items-center gap-3 ms-auto">
-        <a class="nav-link active text-dark" href="#">카페홈</a>
+        <a class="nav-link active text-dark" href="http://localhost:8001/cafe/home">카페홈</a>
         <button class="nav-link active text-dark btn btn-link p-0" id="showSelectButton">가입한카페</button>
         <button class="nav-link active text-dark btn btn-link p-0">쪽지</button>
         <a class="nav-link active text-dark" href="#">마이페이지</a>
@@ -24,5 +24,17 @@
     </div>
     <hr class="border-secondary">
   </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const homeUrl = window.location.pathname;
+  
+      // "/cafe/home"로 시작하는 경로만 검색창을 보이게
+      if (homeUrl.startsWith("/cafe/home")) {
+        document.getElementById("cafeSearch").style.display = "block";  // 보여줌
+      } else {
+        document.getElementById("cafeSearch").style.display = "none";  // 숨김
+      }
+    });
+  </script>
 </header>
 </html>

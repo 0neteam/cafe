@@ -36,14 +36,16 @@ public class SecurityConfig {
   @Bean
   SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.csrf(AbstractHttpConfigurer::disable);
-    http.cors(Customizer.withDefaults());
-    http.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+    http.cors(AbstractHttpConfigurer::disable);
+//    http.cors(Customizer.withDefaults());
+//    http.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
     http.oauth2ResourceServer(o -> o.jwt(Customizer.withDefaults()));
     http.authorizeHttpRequests(r -> {
-      r.requestMatchers(HttpMethod.GET,"/**").permitAll();
-      r.requestMatchers("/docs","/v3/**","/swagger-ui/**").permitAll();
-//      r.anyRequest().permitAll();
-      r.anyRequest().authenticated();
+//      r.requestMatchers(HttpMethod.GET,"/**").permitAll();
+//      r.requestMatchers(HttpMethod.POST,"/**").permitAll();
+//      r.requestMatchers("/docs","/v3/**","/swagger-ui/**").permitAll();
+      r.anyRequest().permitAll();
+//      r.anyRequest().authenticated();
     });
     return http.build();
   }
