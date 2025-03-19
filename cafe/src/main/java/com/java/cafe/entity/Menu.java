@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "menu")
 @Data
@@ -35,6 +38,14 @@ public class Menu {
     private Integer ref;
 
     @Column(nullable = false)
-    private Integer useYN;
+    private char useYN;
+
+    @OneToMany
+    @JoinColumn(name = "ref")
+    private List<Menu> children = new ArrayList<>();
+
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "parent")
+//    private Menu parent;
 
 }
