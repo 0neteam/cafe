@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
 
 <head>
     <meta charset="UTF-8">
@@ -21,35 +23,19 @@
 </head>
 
 <body>
-    <main class="container my-2">
+    <main layout:fragment="content" class="container my-2" style="min-height: 50vh;">
         <div class="container-fluid">
             <div class="d-flex justify-content-between align-items-center my-4">
                 <h2 class="mb-0">카페 A 홈</h2>
-                <button class="btn btn-success">카페 만들기</button>
             </div>
 
             <div class="d-flex flex-column align-items-start mt-3" id="content-container">
-                <div class="card cafe-card mb-3 w-100">
+                <div th:each="menu : ${menuList}" class="card cafe-card mb-3 w-100">
                     <div class="card-body">
-                        <a href="#" class="card-title">카페 A</a><hr>
+                        <a href="#" th:text="${menu.name}" class="card-title">카페 이름</a><hr>
                         <table class="table">
                             <tbody>
-                                <tr><td>게시글 제목 1</td></tr>
-                                <tr><td>게시글 제목 2</td></tr>
-                                <tr><td>게시글 제목 3</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="card cafe-card mb-3 w-100">
-                    <div class="card-body">
-                        <a href="#" class="card-title">카페 B</a><hr>
-                        <table class="table">
-                            <tbody>
-                                <tr><td>게시글 제목 1</td></tr>
-                                <tr><td>게시글 제목 2</td></tr>
-                                <tr><td>게시글 제목 3</td></tr>
+                                <tr><td th:text="'게시글 제목 ' + ${menu.no}">게시글 제목</td></tr>
                             </tbody>
                         </table>
                     </div>
