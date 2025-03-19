@@ -1,29 +1,12 @@
 package com.java.cafe.service;
 
-import com.java.cafe.dto.BoardDTO;
 import com.java.cafe.entity.Board;
-import com.java.cafe.repository.BoardRepository;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import org.springframework.stereotype.Service;
 
-@Service
-@AllArgsConstructor
-public class CafeHomeService {
+import java.util.List;
 
-    private final BoardRepository boardRepository;
+public interface CafeHomeService {
 
-    public Board createBoard(BoardDTO boardDTO);
-    Board board = Board.builder()
-            .no(no)
-            .regUserNo(regUserNo)
-            .type(type)
-            .name(name)
-            .regDate(regDate)
-            .domain(domain)
-            .description(des)
-            .useYN("y")
-            .build();
-    return boardRepository.save(board);
-    }
+    public Board save(Board board);
+    public List<Board> homeCafeList(int type);
+    public List<Board> searchCafeList(String keyward);
 }
