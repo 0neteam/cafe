@@ -13,4 +13,5 @@ public interface BoardRepository extends JpaRepository<Board, Integer>{
     public List<Board> findByNameContainingIgnoreCase(String keyward);
     public Optional<Board> findByTypeAndDomain(Integer type, String domain);
 
+    Integer findByDomain(String domain);
 }

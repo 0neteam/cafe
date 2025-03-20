@@ -30,8 +30,14 @@
 <body>
 
     <div th:replace="fragments/header::header"></div>
+    
+    <div th:replace="fragments/manage::manage"></div>
+
+	<div th:replace="fragments/aside::aside"></div>
 	
-    <div layout:fragment="content2" class="content2"></div>
+    <div layout:fragment="content3" class="content3"></div>
+
+    <div th:replace="fragments/footer::footer"></div>
 
 </body>
 </html>
