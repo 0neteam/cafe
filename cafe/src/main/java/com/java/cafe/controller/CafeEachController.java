@@ -13,41 +13,49 @@ import java.util.List;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping("/cafe")
+//@RequestMapping("/cafe")
 public class CafeEachController {
 
     private final CafeEachService cafeEachService;
 
-    @GetMapping("/menu")
-    public String getMenuList(Model model) {
-        List<MenuDTO> menuList = cafeEachService.getMenuList(2);
+    @GetMapping("/{domain}/menu")
+    public String getMenuList(@PathVariable String domain, Model model) {
+        List<MenuDTO> menuList = cafeEachService.getMenuList(domain);
         model.addAttribute("menuList", menuList);
+        model.addAttribute("domain", domain);
         return "/cafeMain/menuManage";
     }
 
     // 메뉴 추가
-    @PostMapping("/menu/create")
+    @PostMapping("/{domain}/menu/create")
     @ResponseBody
-    public String createMenu(@RequestBody MenuDTO menuDTO) {
-        cafeEachService.createMenu(menuDTO);
-        return "success";
-    }
-
-    // 메뉴 수정
-//    @PostMapping("/menu/edit")
-//    @ResponseBody
-//    public String editMenu(@RequestBody MenuDTO menuDTO) {
-//        cafeEachService.editMenu(menuDTO);
-//        return "redirect:/menu";
-//    }
-
-    // 메뉴 삭제
-    @PostMapping("/menu/delete")
-    @ResponseBody
-    public String deleteMenu(@RequestBody MenuDTO menuDTO) {
-        if (cafeEachService.deleteMenu(menuDTO) != null){
+    public String createMenu(@PathVariable String domain, @RequestBody MenuDTO menuDTO) {
+        System.out.println("++++++++++++++++++++++++" + domain);
+        if (cafeEachService.createMenu(domain, menuDTO) != null){
             return "success";
         } else{
+            return "fail";
+        }
+    }
+
+     // 메뉴 수정
+    @PostMapping("/{domain}/menu/edit")
+    @ResponseBody
+    public String editMenu(@PathVariable String domain, @RequestBody MenuDTO menuDTO) {
+        if (cafeEachService.editMenu(domain, menuDTO) != null){
+            return "success";
+        } else{
+            return "fail";
+        }
+    }
+
+    // 메뉴 삭제
+    @PostMapping("/{domain}/menu/delete")
+    @ResponseBody
+    public String deleteMenu(@PathVariable String domain, @RequestBody MenuDTO menuDTO) {
+        if (cafeEachService.deleteMenu(domain, menuDTO) != null){
+            return "success";
+        } else {
             return "fail";
         }
     }
