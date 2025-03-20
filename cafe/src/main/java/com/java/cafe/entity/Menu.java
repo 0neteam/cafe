@@ -42,6 +42,7 @@ public class Menu {
 
     @OneToMany
     @JoinColumn(name = "ref")
+    @OrderBy("orderNo asc")
     private List<Menu> children = new ArrayList<>();
 
 //    @ManyToOne(fetch = FetchType.LAZY)
