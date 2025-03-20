@@ -1,45 +1,49 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security6">
+
 <aside th:fragment="aside" id="side" class="position-fixed top-0 start-0 vh-100 overflow-auto" style="width: 280px; z-index: 1040; padding: 20px;">
 	<div class="card" style="width: 100%; margin-bottom: 20px;">
 		<div class="card-body">
-		<div class="d-flex justify-content-center gap-1 mb-3" style="white-space: nowrap;">
-			<button class="btn btn-group">카페정보</button>
-			<div class="border-end mx-2"></div>
-			<button class="btn btn-group">나의활동</button>
-		</div>
-		<hr class="border-secondary">
-		<div>
-			<a class="nav-link bi bi-person-check-fill no-link text-nowrap" href="#!"> 운영자이름</a>
-			<p class="bi bi-calendar text-nowrap"> 개설일자</p>
-		</div>
-		<hr class="border-secondary">
-		<div>
-			<a class="nav-link container border my-1 py-2 d-inline-block text-center" href="#!">카페가입</a>
-			<a class="nav-link container border my-1 py-2 d-inline-block text-center" href="#!">카페글쓰기</a>
-		</div>
+			<div class="d-flex justify-content-center gap-1 mb-3" style="white-space: nowrap;">
+				<button id="cafeInfo" name="cafeInfo" class="btn btn-group cafeInfo">카페정보</button>
+				<div class="border-end mx-2"></div>
+				<button id="myHistory" name="myHistory" class="btn btn-group myHistory">나의활동</button>
+			</div>
+			<hr class="border-secondary">
+			<div class="cafeInfoComp">
+				<a class="nav-link bi bi-person-check-fill no-link text-nowrap" href="#!"> 운영자이름</a>
+				<p class="bi bi-calendar text-nowrap"> 개설일자</p>
+				<a class="nav-link text-secondary bi bi-gear-fill no-link text-nowrap" th:href="@{'http://localhost:8001/'+${boardDTO.domain}+'/setting'}"> 카페 설정</a>
+			</div>
+			<div class="myHistoryComp">
+				<div>
+					<a class="nav-link bi bi-person no-link text-nowrap" href="#!"> 사용자 이름</a>
+				</div>
+				<div>
+					<div class="d-flex justify-content-between">
+						<a class="nav-link bi bi-blockquote-left no-link text-nowrap" href="#!"> 내가 쓴 글</a>
+						<p class="text-secondary mb-0">몇 개</p>
+					</div>
+					<div class="d-flex justify-content-between">
+						<a class="nav-link bi bi-blockquote-left no-link text-nowrap" href="#!"> 내가 쓴 댓글</a>
+						<p class="text-secondary mb-0">몇 개</p>
+					</div>
+					<div>
+					<p class="bi bi-calendar text-nowrap mb-0"> 가입일자</p>
+					</div>
+				</div>
+			</div>
+			<hr class="border-secondary">
+			<div>
+				<a class="nav-link container border my-1 py-2 d-inline-block text-center" href="#!">카페가입</a>
+				<a class="nav-link container border my-1 py-2 d-inline-block text-center" href="#!">카페글쓰기</a>
+			</div>
+			<div>
+			</div>
 		</div>
 	</div>
-	<div class="card" style="width: 100%; margin-bottom: 20px;">
-		<div class="card-body">
-		<div class="d-flex justify-content-center gap-1 mb-3" style="white-space: nowrap;">
-			<button class="btn btn-group">카페정보</button>
-			<div class="border-end mx-2"></div>
-			<button class="btn btn-group">나의활동</button>
-		</div>
-		<hr class="border-secondary">
-		<div>
-			<a class="nav-link bi bi-person-check-fill no-link text-nowrap" href="#!"> 운영자이름</a>
-			<p class="bi bi-calendar text-nowrap"> 개설일자</p>
-		</div>
-		<hr class="border-secondary">
-		<div>
-			<a class="nav-link container border my-1 py-2 d-inline-block text-center" href="#!">카페가입</a>
-			<a class="nav-link container border my-1 py-2 d-inline-block text-center" href="#!">카페글쓰기</a>
-		</div>
-		</div>
-	</div>
+
 
 	<form class="flex-grow-1" role="search">
 		<div class="input-group">
@@ -71,6 +75,26 @@
 		</div>
 	</div>
 	</div>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+            // 기본적으로 cafeInfo만 보이게 설정
+            document.querySelector('.cafeInfoComp').style.display = 'block';
+            document.querySelector('.myHistoryComp').style.display = 'none';
+
+            // 카페정보 버튼 클릭
+            document.getElementById('cafeInfo').addEventListener('click', function() {
+                document.querySelector('.myHistoryComp').style.display = 'none';
+                document.querySelector('.cafeInfoComp').style.display = 'block';
+            });
+
+            // 나의활동 버튼 클릭
+            document.getElementById('myHistory').addEventListener('click', function() {
+                document.querySelector('.cafeInfoComp').style.display = 'none';
+                document.querySelector('.myHistoryComp').style.display = 'block';
+            });
+        });
+
+	</script>
 </aside>
 </html>
 

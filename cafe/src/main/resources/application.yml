@@ -38,13 +38,10 @@ management:
     sampling:
       probability: 1.0
 
-springdoc:
-  swagger-ui:
-    path: /docs
-    operationsSorter: method
-
-swagger:
-  api-gateway-url: http://localhost:8000/${spring.application.name}
+#springdoc:
+#  swagger-ui:
+#    path: /docs
+#    operationsSorter: method
 
 logging.level.org:
   springframework.security: trace
