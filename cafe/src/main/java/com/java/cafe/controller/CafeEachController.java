@@ -20,17 +20,17 @@ public class CafeEachController {
 
     @GetMapping("/{domain}/menu")
     public String getMenuList(@PathVariable String domain, Model model) {
+        System.out.println("------------------------" + domain);
         List<MenuDTO> menuList = cafeEachService.getMenuList(domain);
         model.addAttribute("menuList", menuList);
         model.addAttribute("domain", domain);
-        return "/cafeMain/menuManage";
+        return "cafeMain/menuManage";
     }
 
     // 메뉴 추가
     @PostMapping("/{domain}/menu/create")
     @ResponseBody
     public String createMenu(@PathVariable String domain, @RequestBody MenuDTO menuDTO) {
-        System.out.println("++++++++++++++++++++++++" + domain);
         if (cafeEachService.createMenu(domain, menuDTO) != null){
             return "success";
         } else{
@@ -60,12 +60,22 @@ public class CafeEachController {
         }
     }
 
+    // 각 도메인별 메뉴 메인 화면
+//    @GetMapping("{domain}/")
+//    @ResponseBody
+//    public String getMenuList(@PathVariable String domain, @PathVariable String menu, Model model) {
+//        List<MenuDTO> menuList = cafeEachService.getMenuList(domain);
+//        model.addAttribute("menuList", menuList);
+//        model.addAttribute("domain", domain);
+//        return "cafeMain/menuMain";
+//    }
+
     // 포스트 조회
 //    @GetMapping("/post/detail")
 //    public String write(Model model) {
 //        return "cafeMain/write";
 //    }
-//
+
      // 포스트 저장
 //    @PostMapping("/post/create")
 //    public String writeCreate(@ModelAttribute PostDTO postDTO) {
