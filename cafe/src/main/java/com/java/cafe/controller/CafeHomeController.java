@@ -23,7 +23,7 @@ public class CafeHomeController {
 
     @GetMapping("/home")
     public String home(Model model){
-        List<Board> cafeList = cafeHomeService.homeCafeList(1);
+        List<Board> cafeList = cafeHomeService.homeCafeList(1,'Y');
         model.addAttribute("cafeList", cafeList);
         return "cafeHome/home";
     }
