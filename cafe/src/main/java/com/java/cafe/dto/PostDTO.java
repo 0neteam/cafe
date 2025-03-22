@@ -6,7 +6,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -20,10 +20,10 @@ public class PostDTO {
     private Integer menuNo;
     private String title;
     private String content;
-    private Date regUserNo;
-    private Date regDate;
-    private Date modUserNo;
-    private Date modDate;
+    private Integer regUserNo;
+    private LocalDateTime regDate;
+    private Integer modUserNo;
+    private LocalDateTime modDate;
     private Integer viewCount;
     private char useYN;
 

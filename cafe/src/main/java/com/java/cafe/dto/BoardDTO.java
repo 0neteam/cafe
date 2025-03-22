@@ -1,9 +1,9 @@
 package com.java.cafe.dto;
 
-import jakarta.persistence.Column;
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -17,7 +17,7 @@ public class BoardDTO {
     private Integer regUserNo;
     private Integer type;
     private String name;
-    private Date regDate;
+    private LocalDate regDate;
     private String domain;
     private String description;
     private char useYN;

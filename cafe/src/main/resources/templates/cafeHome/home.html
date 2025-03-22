@@ -34,7 +34,7 @@
                         <div class="card-body">
                             <h5 class="card-title" th:text="${cafe.name}"></h5>
                             <p class="card-text mb-0 text-secondary" th:text="${cafe.description}"></p>
-                            <p class="card-text mb-0 text-secondary" th:text="${#dates.format(cafe.regDate, 'yyyy-MM-dd')}">카페 개설일</p>
+                            <p class="card-text mb-0 text-secondary" th:text="${cafe.regDate}"></p>
                         </div>
                     </a>
                 </li>
