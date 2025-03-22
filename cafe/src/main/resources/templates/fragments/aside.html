@@ -2,8 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security6">
 
-<aside th:fragment="aside" id="side" class="position-fixed top-0 start-0 vh-100 overflow-auto" style="width: 280px; z-index: 1040; padding: 20px;">
-	<div class="card" style="width: 100%; margin-bottom: 20px;">
+<!-- <aside th:fragment="aside" id="side" class="overflow-auto mx-2" style="width: 280px; padding: 20px;"> -->
+<aside th:fragment="aside" id="side" class="overflow-auto" style="min-width: 280px; padding: 10px;">
+	<div>
+	<div class="card" style="width: 100%;">
 		<div class="card-body">
 			<div class="d-flex justify-content-center gap-1 mb-3" style="white-space: nowrap;">
 				<button id="cafeInfo" name="cafeInfo" class="btn btn-group cafeInfo">카페정보</button>
@@ -13,7 +15,7 @@
 			<hr class="border-secondary">
 			<div class="cafeInfoComp">
 				<a class="nav-link bi bi-person-check-fill no-link text-nowrap" href="#!"> 운영자이름</a>
-				<p class="bi bi-calendar text-nowrap"> 개설일자</p>
+				<p class="bi bi-calendar-event text-nowrap"> 개설일자</p>
 				<a class="nav-link text-secondary bi bi-gear-fill no-link text-nowrap" th:href="@{'http://localhost:8001/'+${boardDTO.domain}+'/setting'}"> 카페 설정</a>
 			</div>
 			<div class="myHistoryComp">
@@ -26,11 +28,11 @@
 						<p class="text-secondary mb-0">몇 개</p>
 					</div>
 					<div class="d-flex justify-content-between">
-						<a class="nav-link bi bi-blockquote-left no-link text-nowrap" href="#!"> 내가 쓴 댓글</a>
+						<a class="nav-link bi bi-chat-dots no-link text-nowrap" href="#!"> 내가 쓴 댓글</a>
 						<p class="text-secondary mb-0">몇 개</p>
 					</div>
 					<div>
-					<p class="bi bi-calendar text-nowrap mb-0"> 가입일자</p>
+					<p class="bi bi-calendar-event text-nowrap mb-0"> 가입일자</p>
 					</div>
 				</div>
 			</div>
@@ -45,33 +47,34 @@
 	</div>
 
 
-	<form class="flex-grow-1" role="search">
+	<form class="flex-grow-1 my-3" role="search">
 		<div class="input-group">
 		<input type="text" class="form-control border-warning" id="search1">
 		<button class="btn btn-warning text-dark" type="submit">검색</button>
 		</div>
 	</form> 
 	
+
 	<div class="list-group list-group-flush">
 	<a class="list-group-item list-group-item-action" data-bs-toggle="collapse" href="#menuGroup1" aria-expanded="true">menu1</a>
 	<div class="collapse show" id="menuGroup1">
 		<div class="border-bottom">
-		<a class="list-group-item ps-4" data-bs-toggle="collapse" href="#!" aria-expanded="true">menu1-1</a>
-		<a class="list-group-item ps-4" data-bs-toggle="collapse" href="#!" aria-expanded="true">menu1-2</a>
+		<a class="list-group-item ps-4" href="#!" aria-expanded="true">menu1-1</a>
+		<a class="list-group-item ps-4" href="#!" aria-expanded="true">menu1-2</a>
 		</div>
 	</div>
 	<a class="list-group-item list-group-item-action" data-bs-toggle="collapse" href="#menuGroup2" aria-expanded="true">menu2</a>
 	<div class="collapse show" id="menuGroup2">
 		<div class="border-bottom">
-		<a class="list-group-item ps-4" data-bs-toggle="collapse" href="#!" aria-expanded="true">menu2-1</a>
-		<a class="list-group-item ps-4" data-bs-toggle="collapse" href="#!" aria-expanded="true">menu2-2</a>
+		<a class="list-group-item ps-4" href="#!" aria-expanded="true">menu2-1</a>
+		<a class="list-group-item ps-4" href="#!" aria-expanded="true">menu2-2</a>
 		</div>
 	</div>
-	<a class="list-group-item list-group-item-action" data-bs-toggle="collapse" href="#menuGroup3" aria-expanded="true">menu3</a>
+	<a class="list-group-item list-group-item-action" href="#menuGroup3" aria-expanded="true">menu3</a>
 	<div class="collapse show" id="menuGroup3">
 		<div class="border-bottom">
-		<a class="list-group-item ps-4" data-bs-toggle="collapse" href="#!" aria-expanded="true">menu3-1</a>
-		<a class="list-group-item ps-4" data-bs-toggle="collapse" href="#!" aria-expanded="true">menu3-2</a>
+		<a class="list-group-item ps-4" href="#!" aria-expanded="true">menu3-1</a>
+		<a class="list-group-item ps-4" href="#!" aria-expanded="true">menu3-2</a>
 		</div>
 	</div>
 	</div>
@@ -95,6 +98,7 @@
         });
 
 	</script>
+	</div>
 </aside>
 </html>
 

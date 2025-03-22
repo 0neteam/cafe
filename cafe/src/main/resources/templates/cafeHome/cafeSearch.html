@@ -11,10 +11,19 @@
 </head>
 <main layout:fragment="content2" class="container my-2" style="min-height: 50vh;">
 <body>
-    <div class="container container-fluid my-2">
-        <h2 class="my-4">카페검색결과</h2>
-        <p th:text="${keyward} + '로 검색한 결과입니다.'" class="text-primary"></p>
-        <div th:each="cafe : ${cafeList}" class="d-flex flex-column align-items-start mt-3">
+    
+    <div class="container container-fluid mt-5">
+        <div class="d-flex align-items-center gap-3 mt-5">
+            <h3 th:text="'\'' + ${keyward} + '\'' + ' 검색결과'"></h3>
+            <form method="GET" action="/cafe/home/search" class="col-sm-6 d-flex align-items-center gap-3 ms-auto" id="cafeSearch" name="cafeSearch">
+                <div class="input-group d-flex align-items-center">
+                    <input name="keyward" type="text" class="form-control border-success" placeholder="검색어를 입력해주세요">
+                    <button class="btn btn-success" type="submit">검색</button>
+                </div>
+            </form>
+        </div>
+        <div class="mt-5">
+        <div th:each="cafe : ${cafeList}" class="d-flex flex-column align-items-start">
             <ul class="container">
                 <li class="card cafe-card container my-1">
                     <a th:href="@{'http://localhost:8001/'+${cafe.domain}}" class="text-dark">
@@ -26,6 +35,7 @@
                     </a>
                 </li>
             </ul>
+        </div>
         </div>
     </div>
 </body>
