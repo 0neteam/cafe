@@ -21,6 +21,7 @@ public class CafeEachServiceImp implements CafeEachService {
     private final BoardRepository boardRepository;
 
     public List<MenuDTO> getMenuList(String domain) {
+        System.out.println("+++++++++++++++++++++++++++" + domain);
         Optional<Board> boardSelect = boardRepository.findByTypeAndDomain(1, domain);
         if (boardSelect.isEmpty()) {
             throw new IllegalArgumentException("Board not found for domain: " + domain);
