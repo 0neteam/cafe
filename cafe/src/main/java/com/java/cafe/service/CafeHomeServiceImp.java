@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +28,11 @@ public class CafeHomeServiceImp implements CafeHomeService {
     @Override
     public List<Board> searchCafeList(String keyward) {
         return boardRepository.findByNameContainingIgnoreCase(keyward);
+    }
+
+    @Override
+    public Optional<Board> cafeBaseInfo(Integer type, String domain){
+        return boardRepository.findByTypeAndDomain(type, domain);
     }
 
 }
