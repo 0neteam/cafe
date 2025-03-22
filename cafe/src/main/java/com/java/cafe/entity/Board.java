@@ -2,7 +2,14 @@ package com.java.cafe.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "board")
@@ -26,7 +33,9 @@ public class Board {
     private String name;
 
     @Column(nullable = false)
-    private Date regDate;
+    @CreationTimestamp
+    @JsonFormat(pattern = "yyyy.MM.dd.")
+    private LocalDate regDate;
 
     @Column(nullable = false, length = 30)
     private String domain;

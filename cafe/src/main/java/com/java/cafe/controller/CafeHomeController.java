@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -44,7 +46,7 @@ public class CafeHomeController {
                 .name(boardDTO.getName())
                 .domain(boardDTO.getDomain())
                 .description(boardDTO.getDescription())
-                .regDate(new Date())
+                .regDate(LocalDate.now())
                 .useYN('Y')
                 .build();
         cafeHomeService.save(board);
