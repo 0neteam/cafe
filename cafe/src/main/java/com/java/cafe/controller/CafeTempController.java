@@ -55,8 +55,13 @@ public class CafeTempController {
 }
 
     @PostMapping("/{domain}/setting/delCafe")
-    public String postMethodName(@PathVariable String domain) {
+    public String delCafe(@PathVariable String domain) {
+        Board board = cafeHomeService.cafeBaseInfo(1, domain)
+        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시판입니다: domain=" + domain));
+
+        board.setUseYN('N');
         
+        cafeHomeService.save(board);
         return "redirect:/cafe/home";
     }
     
