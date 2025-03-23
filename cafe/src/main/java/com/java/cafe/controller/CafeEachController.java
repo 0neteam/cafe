@@ -1,6 +1,8 @@
 package com.java.cafe.controller;
 
 import com.java.cafe.dto.MenuDTO;
+import com.java.cafe.dto.PostDTO;
+import com.java.cafe.entity.Menu;
 import com.java.cafe.repository.MenuRepository;
 import com.java.cafe.service.CafeEachService;
 import lombok.AllArgsConstructor;
@@ -18,9 +20,8 @@ public class CafeEachController {
 
     private final CafeEachService cafeEachService;
 
-    @GetMapping("/{domain}/menu")
+    @GetMapping("/{domain}/setting/menu")
     public String getMenuList(@PathVariable String domain, Model model) {
-        System.out.println("------------------------" + domain);
         List<MenuDTO> menuList = cafeEachService.getMenuList(domain);
         model.addAttribute("menuList", menuList);
         model.addAttribute("domain", domain);
@@ -70,18 +71,21 @@ public class CafeEachController {
 //        return "cafeMain/menuMain";
 //    }
 
-    // 포스트 조회
-//    @GetMapping("/post/detail")
-//    public String write(Model model) {
-//        return "cafeMain/write";
-//    }
+    // 포스트 작성 화면
+    @GetMapping("/{domain}/post/write")
+    public String write(@PathVariable String domain, Model model) {
+        List<MenuDTO> menuList = cafeEachService.getMenuPost(domain);
+        model.addAttribute("menuList", menuList);
+        model.addAttribute("domain", domain);
+        return "cafeMain/write";
+    }
 
-     // 포스트 저장
-//    @PostMapping("/post/create")
-//    public String writeCreate(@ModelAttribute PostDTO postDTO) {
-//        return "redirect:/";
-//    }
-//
+    // 포스트 저장
+    @PostMapping("/post/create")
+    public String writeCreate(@ModelAttribute PostDTO postDTO) {
+        return "redirect:/";
+    }
+
      // 포스트 수정
 //    @PostMapping("/post/edit")
 //    public String writeEdit(@ModelAttribute PostDTO postDTO) {

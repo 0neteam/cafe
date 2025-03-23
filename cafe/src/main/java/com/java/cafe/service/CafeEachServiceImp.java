@@ -1,10 +1,13 @@
 package com.java.cafe.service;
 
 import com.java.cafe.dto.MenuDTO;
+import com.java.cafe.dto.PostDTO;
 import com.java.cafe.entity.Board;
 import com.java.cafe.entity.Menu;
+import com.java.cafe.entity.Post;
 import com.java.cafe.repository.BoardRepository;
 import com.java.cafe.repository.MenuRepository;
+import com.java.cafe.repository.PostRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +22,11 @@ public class CafeEachServiceImp implements CafeEachService {
 
     private final MenuRepository menuRepository;
     private final BoardRepository boardRepository;
+    private final PostRepository postRepository;
 
+    // 메뉴 리스트 가져오기
+    @Override
     public List<MenuDTO> getMenuList(String domain) {
-        System.out.println("+++++++++++++++++++++++++++" + domain);
         Optional<Board> boardSelect = boardRepository.findByTypeAndDomain(1, domain);
         if (boardSelect.isEmpty()) {
             throw new IllegalArgumentException("Board not found for domain: " + domain);
@@ -29,9 +34,7 @@ public class CafeEachServiceImp implements CafeEachService {
         Board board = boardSelect.get();
         Integer boardNo = board.getNo();
 
-        System.out.println(boardNo);
         List<Menu> menus = menuRepository.findByBoardNoAndRefAndUseYNOrderByOrderNoAsc(boardNo, 0, 'Y');
-        System.out.println(menus);
         List<MenuDTO> filterMenus = new ArrayList<>();
 
         for (Menu menu : menus) {
@@ -55,7 +58,8 @@ public class CafeEachServiceImp implements CafeEachService {
         return filterMenus;
     }
 
-
+    // 메뉴 생성
+    @Override
     public MenuDTO createMenu(String domain, MenuDTO menuDTO) {
 
         Optional<Board> boardSelect = boardRepository.findByTypeAndDomain(1, domain);
@@ -77,6 +81,7 @@ public class CafeEachServiceImp implements CafeEachService {
     }
 
     // 메뉴 수정
+    @Override
     public MenuDTO editMenu(String domain, MenuDTO menuDTO) {
         Menu menu = menuRepository.findById(menuDTO.getNo())
                 .orElseThrow(() -> new RuntimeException("Menu not found"));
@@ -87,6 +92,7 @@ public class CafeEachServiceImp implements CafeEachService {
     }
 
     // 메뉴 삭제
+    @Override
     public String deleteMenu(String domain, MenuDTO menuDTO) {
         Menu menu = menuRepository.findById(menuDTO.getNo())
                 .orElseThrow(() -> new RuntimeException("Menu not found"));
@@ -94,5 +100,80 @@ public class CafeEachServiceImp implements CafeEachService {
         menuRepository.save(menu);
         return "success";
     }
+
+    // 자식 게시판 조회
+    @Override
+    public List<MenuDTO> getMenuPost(String domain) {
+    Optional<Board> boardSelect = boardRepository.findByTypeAndDomain(1, domain);
+    if (boardSelect.isEmpty()) {
+        throw new IllegalArgumentException("Board not found for domain: " + domain);
+    }
+    Board board = boardSelect.get();
+    Integer boardNo = board.getNo();
+
+    List<Menu> menus = menuRepository.findByBoardNoAndRefAndUseYNOrderByOrderNoAsc(boardNo, 0, 'Y');
+    List<MenuDTO> filterMenus = new ArrayList<>();
+
+    for (Menu menu : menus) {
+        List<Menu> filteredChildren = menu.getChildren().stream()
+            .filter(child -> child.getUseYN() == 'Y' && child.getDepth() > 0)  // 자식만 필터링
+            .collect(Collectors.toList());
+
+        filterMenus.add(new MenuDTO(
+            menu.getNo(),
+            menu.getBoard().getNo(),
+            menu.getOrderNo(),
+            menu.getDepth(),
+            menu.getName(),
+            menu.getRef(),
+            menu.getUseYN(),
+            filteredChildren // 필터링된 children 리스트
+        ));
+    }
+
+    return filterMenus;
+    }
+
+
+//    @Override
+//    public List<Post> getPostList(String domain, PostDTO postDTO) {
+//        Optional<Menu> menuSelect = menuRepository.findById(postDTO.getMenuNo());
+//        System.out.println("Executing query with domain: " + domain);
+//        if (menuSelect.isEmpty()) {
+//            throw new IllegalArgumentException("Board not found for menu: " + postDTO);
+//        }
+//        Menu menu = menuSelect.get();
+//        Integer boardNo = menu.getNo();
+//
+//        System.out.println(boardNo);
+//        List<Menu> menus = menuRepository.findByBoardNoAndRefAndUseYNOrderByOrderNoAsc(boardNo, 0, 'Y');
+//        System.out.println(menus);
+//        List<MenuDTO> filterMenus = new ArrayList<>();
+
+//        for (Menu menu : menus) {
+//            List<Menu> filteredChildren = new ArrayList<>();
+//            for (Menu child : menu.getChildren()) {
+//                if (child.getUseYN() == 'Y') {
+//                    filteredChildren.add(child);
+//                }
+//            }
+//            filterMenus.add(new MenuDTO(
+//                    menu.getNo(),
+//                    menu.getBoard().getNo(),
+//                    menu.getOrderNo(),
+//                    menu.getDepth(),
+//                    menu.getName(),
+//                    menu.getRef(),
+//                    menu.getUseYN(),
+//                    filteredChildren
+//            ));
+//        }
+//        return null;
+//    }
+
+//    @Override
+//    public PostDTO createPost(PostDTO postDTO) {
+//        return null;
+//    }
 
 }

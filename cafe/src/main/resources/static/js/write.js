@@ -2,7 +2,6 @@ $(document).ready(function() {
 
     const domain = $('body').data('domain');
 
-    // 부모 메뉴 클릭
     $('#menuList').on('click', '> li > div > span', function() {
         const menuItem = $(this).closest('li');
         const menuName = menuItem.data('menuname');
@@ -54,7 +53,10 @@ $(document).ready(function() {
     $('#add').on('click', function() {
         const menuName = $('#name').val();
         const menuRef = $('#ref').val();
-        let menuDepth = 1;
+        let menuDepth = 0;
+        if (menuRef != 0) {
+            menuDepth = 1;
+        }
         if (!menuName) {
             alert('메뉴명을 입력해 주세요.');
             return;
@@ -65,38 +67,6 @@ $(document).ready(function() {
             depth: menuDepth
         };
 
-        console.log(menuData);
-
-        $.ajax({
-            url: `/${domain}/menu/create`,
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(menuData)
-        })
-        .done(function(response) {
-            alert('추가 성공');
-            location.reload();
-        })
-        .fail(function(error) {
-            console.error('Error:', error);
-            alert('추가 실패');
-        });
-    });
-
-    // 그룹 추가 버튼
-    $('#groupadd').on('click', function() {
-        const menuName = $('#name').val();
-        const menuRef = 0;
-        let menuDepth = 0;
-        if (!menuName) {
-            alert('그룹명을 입력해 주세요.');
-            return;
-        }
-        const menuData = {
-            name: menuName,
-            ref: menuRef,
-            depth: menuDepth
-        };
         console.log(menuData);
 
         $.ajax({
@@ -151,16 +121,6 @@ $(document).ready(function() {
         });
     });
 
-    // 그룹 만들기 버튼
-    $('#group').on('click', function() {
-        $('#ref').hide();
-        $('#reflabel').hide();
-        $('#add').hide();
-        $('#groupadd').show();
-        $('#edit').hide();
-        $('#name').attr('placeholder', '그룹명을 입력하세요');
-    });
-
     // 취소 버튼
     $('#reset').on('click', function() {
         setToAddMode();
@@ -177,9 +137,7 @@ $(document).ready(function() {
     function setToAddMode() {
         $('#name').val('');
         $('#no').val('');
-        $('#reflabel').show();
         $('#ref').val(0);
-        $('#groupadd').hide();
         $('#add').show();
         $('#edit').hide();
     }
