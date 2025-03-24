@@ -1,5 +1,6 @@
 package com.java.cafe.service;
 
+import com.java.cafe.dto.BoardDTO;
 import com.java.cafe.dto.MenuDTO;
 import com.java.cafe.dto.PostDTO;
 import com.java.cafe.entity.Board;
@@ -23,6 +24,24 @@ public class CafeEachServiceImp implements CafeEachService {
     private final MenuRepository menuRepository;
     private final BoardRepository boardRepository;
     private final PostRepository postRepository;
+
+    // 카페 메인페이지 관련 정보
+    @Override
+    public BoardDTO cafeInfo(int type, String domain) {
+        Board board = boardRepository.findByTypeAndDomain(type, domain)
+                .orElseThrow(() -> new RuntimeException("도메인 정보를 찾을 수 없음"));
+        BoardDTO boardDTO = new BoardDTO(
+                board.getNo(),
+                board.getRegUserNo(),
+                board.getType(),
+                board.getName(),
+                board.getRegDate(),
+                board.getDomain(),
+                board.getDescription(),
+                board.getUseYN()
+        );
+        return boardDTO;
+    }
 
     // 메뉴 리스트 가져오기
     @Override

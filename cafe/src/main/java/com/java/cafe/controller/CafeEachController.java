@@ -1,10 +1,14 @@
 package com.java.cafe.controller;
 
+import com.java.cafe.dto.BoardDTO;
 import com.java.cafe.dto.MenuDTO;
 import com.java.cafe.dto.PostDTO;
+import com.java.cafe.entity.Board;
 import com.java.cafe.entity.Menu;
 import com.java.cafe.repository.MenuRepository;
 import com.java.cafe.service.CafeEachService;
+import com.java.cafe.service.CafeHomeService;
+
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +22,54 @@ import java.util.List;
 public class CafeEachController {
 
     private final CafeEachService cafeEachService;
+    private final CafeHomeService cafeHomeService;
+
+    // 개별 카페 메인페이지
+    @GetMapping("/{domain}")
+    public String route(@PathVariable String domain, Model model){
+        BoardDTO boardDTO = cafeEachService.cafeInfo(1, domain);
+        String checkDomain = boardDTO.getDomain();
+        model.addAttribute("boardDTO", boardDTO);
+
+        if (domain.equals(checkDomain)) {
+            return "cafeMain/cafeHome";
+        }
+        return "redirect:/cafe/home";
+    }
+
+    // 카페 기본정보 수정페이지
+    @GetMapping("/{domain}/setting/baseInfo")
+    public String baseInfo(@PathVariable String domain, Model model){
+        BoardDTO boardDTO = cafeEachService.cafeInfo(1, domain);
+        model.addAttribute("boardDTO", boardDTO);
+        return "cafeMain/cafeManage";
+    }
+
+    // 카페 기본정보 수정
+    @PostMapping("/{domain}/setting/baseInfo")
+    public String baseInfoEdit(@PathVariable String domain, @ModelAttribute BoardDTO boardDTO){
+        Board board = cafeHomeService.cafeBaseInfo(1, domain)
+        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시판입니다: domain=" + domain));
+
+        board.setName(boardDTO.getName());
+        board.setDomain(boardDTO.getDomain());
+        board.setDescription(boardDTO.getDescription());
+
+        cafeHomeService.save(board);
+
+        return "redirect:/" + boardDTO.getDomain() + "/setting/baseInfo";
+}
+    // 카페 삭제
+    @PostMapping("/{domain}/setting/delCafe")
+    public String delCafe(@PathVariable String domain) {
+        Board board = cafeHomeService.cafeBaseInfo(1, domain)
+        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시판입니다: domain=" + domain));
+
+        board.setUseYN('N');
+        
+        cafeHomeService.save(board);
+        return "redirect:/cafe/home";
+    }
 
     @GetMapping("/{domain}/setting/menu")
     public String getMenuList(@PathVariable String domain, Model model) {

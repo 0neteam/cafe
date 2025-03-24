@@ -5,6 +5,7 @@ import com.java.cafe.entity.Board;
 import java.util.List;
 import java.util.Optional;
 
+
 public interface CafeHomeService {
 
     public Board save(Board board);
