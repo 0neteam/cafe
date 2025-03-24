@@ -9,5 +9,4 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
 
     public List<Menu> findByBoardNoAndRefAndUseYNOrderByOrderNoAsc(Integer boardNo, Integer ref, char useYN);
 
-
 }
