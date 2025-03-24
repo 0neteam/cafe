@@ -2,7 +2,8 @@ package com.java.cafe.service;
 
 import com.java.cafe.entity.Board;
 import com.java.cafe.repository.BoardRepository;
-import lombok.RequiredArgsConstructor;
+
+import lombok.AllArgsConstructor;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class CafeHomeServiceImp implements CafeHomeService {
 
     private final BoardRepository boardRepository;
