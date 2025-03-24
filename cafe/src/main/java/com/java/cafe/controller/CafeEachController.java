@@ -15,7 +15,6 @@ import java.util.List;
 
 @Controller
 @AllArgsConstructor
-//@RequestMapping("/cafe")
 public class CafeEachController {
 
     private final CafeEachService cafeEachService;
@@ -64,7 +63,7 @@ public class CafeEachController {
     // 각 도메인별 메뉴 메인 화면
 //    @GetMapping("{domain}/")
 //    @ResponseBody
-//    public String getMenuList(@PathVariable String domain, @PathVariable String menu, Model model) {
+//    public String getMenuList(@PathVariable String domain, Model model) {
 //        List<MenuDTO> menuList = cafeEachService.getMenuList(domain);
 //        model.addAttribute("menuList", menuList);
 //        model.addAttribute("domain", domain);

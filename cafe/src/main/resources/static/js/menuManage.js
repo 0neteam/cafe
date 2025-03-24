@@ -8,7 +8,6 @@ $(document).ready(function() {
         const menuName = menuItem.data('menuname');
         const menuNo = menuItem.data('menuno');
         const menuRef = menuItem.data('menuref');
-        console.log(menuRef)
         setMenuName(menuName, menuNo, menuRef);
     });
 
@@ -18,7 +17,6 @@ $(document).ready(function() {
         const menuName = menuItem.data('menuname');
         const menuNo = menuItem.data('menuno');
         const menuRef = menuItem.data('menuref');
-        console.log(menuRef)
         setMenuName(menuName, menuNo, menuRef);
     });
 
@@ -28,7 +26,7 @@ $(document).ready(function() {
         const menuItem = $(this).closest('li');
         const menuNo = menuItem.data('menuno');
 
-        if (confirm("이 메뉴를 삭제하시겠습니까?")) {
+        if (confirm("메뉴를 삭제하시겠습니까?")) {
             $.ajax({
                 url: `/${domain}/menu/delete`,
                 type: 'POST',
@@ -64,23 +62,22 @@ $(document).ready(function() {
             ref: menuRef,
             depth: menuDepth
         };
-
-        console.log(menuData);
-
-        $.ajax({
-            url: `/${domain}/menu/create`,
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(menuData)
-        })
-        .done(function(response) {
-            alert('추가 성공');
-            location.reload();
-        })
-        .fail(function(error) {
-            console.error('Error:', error);
-            alert('추가 실패');
-        });
+        if (confirm("메뉴를 추가하시겠습니까?")) {
+            $.ajax({
+                url: `/${domain}/menu/create`,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(menuData)
+            })
+            .done(function(response) {
+                alert('추가 성공');
+                location.reload();
+            })
+            .fail(function(error) {
+                console.error('Error:', error);
+                alert('추가 실패');
+            });
+        }
     });
 
     // 그룹 추가 버튼
@@ -97,22 +94,23 @@ $(document).ready(function() {
             ref: menuRef,
             depth: menuDepth
         };
-        console.log(menuData);
 
-        $.ajax({
-            url: `/${domain}/menu/create`,
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(menuData)
-        })
-        .done(function(response) {
-            alert('추가 성공');
-            location.reload();
-        })
-        .fail(function(error) {
-            console.error('Error:', error);
-            alert('추가 실패');
-        });
+        if (confirm("그룹을 추가하시겠습니까?")) {
+            $.ajax({
+                url: `/${domain}/menu/create`,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(menuData)
+            })
+            .done(function(response) {
+                alert('추가 성공');
+                location.reload();
+            })
+            .fail(function(error) {
+                console.error('Error:', error);
+                alert('추가 실패');
+            });
+        }
     });
 
     // 수정 버튼 클릭 시
@@ -133,26 +131,30 @@ $(document).ready(function() {
             name: menuName,
             ref: menuRef
         };
-        console.log(menuData);
 
-        $.ajax({
-            url: `/${domain}/menu/edit`,
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(menuData)
-        })
-        .done(function(response) {
-            alert('수정 완료');
-            location.reload();
-        })
-        .fail(function(error) {
-            console.error('Error:', error);
-            alert('수정 실패');
-        });
+        if (confirm("메뉴를 수정하시겠습니까?")) {
+            $.ajax({
+                url: `/${domain}/menu/edit`,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(menuData)
+            })
+            .done(function(response) {
+                alert('수정 완료');
+                location.reload();
+            })
+            .fail(function(error) {
+                console.error('Error:', error);
+                alert('수정 실패');
+            });
+        }
     });
 
     // 그룹 만들기 버튼
     $('#group').on('click', function() {
+        $('#name').val('');
+        $('#no').val('');
+        $('#ref').val(0);
         $('#ref').hide();
         $('#reflabel').hide();
         $('#add').hide();
@@ -170,6 +172,9 @@ $(document).ready(function() {
         $('#name').val(menuName);
         $('#no').val(menuNo);
         $('#ref').val(menuRef);
+        $('#reflabel').show();
+        $('#ref').show();
+        $('#groupadd').hide();
         $('#add').hide();
         $('#edit').show();
     }
@@ -177,8 +182,9 @@ $(document).ready(function() {
     function setToAddMode() {
         $('#name').val('');
         $('#no').val('');
-        $('#reflabel').show();
         $('#ref').val(0);
+        $('#reflabel').show();
+        $('#ref').show();
         $('#groupadd').hide();
         $('#add').show();
         $('#edit').hide();
