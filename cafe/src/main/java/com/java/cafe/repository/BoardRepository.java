@@ -13,8 +13,7 @@ import java.util.Optional;
 public interface BoardRepository extends JpaRepository<Board, Integer>{
     
     public List<Board> findByTypeAndUseYN(int type, char useYN, Sort cafeLSort);
-    public List<Board> findByNameContainingIgnoreCase(String keyward);
+    public List<Board> findByTypeAndUseYNAndNameContainingIgnoreCaseOrderByRegDateDesc(Integer type, char useYN, String keyward);
     public Optional<Board> findByTypeAndDomain(Integer type, String domain);
 
-    Integer findByDomain(String domain);
 }

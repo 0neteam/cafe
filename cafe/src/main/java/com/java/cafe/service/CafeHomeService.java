@@ -1,6 +1,8 @@
 package com.java.cafe.service;
 
+import com.java.cafe.dto.BoardDTO;
 import com.java.cafe.entity.Board;
+import org.springframework.ui.Model;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,8 +10,7 @@ import java.util.Optional;
 
 public interface CafeHomeService {
 
-    public Board save(Board board);
-    public List<Board> homeCafeList(int type, char useYN);
-    public List<Board> searchCafeList(String keyward);
-    public Optional<Board> cafeBaseInfo(Integer type, String domain);
+    public void searchCafeList(String keyword, Model model);
+    public String save(BoardDTO boardDTO);
+    
 }

@@ -28,10 +28,8 @@ $(document).ready(function() {
 
         if (confirm("메뉴를 삭제하시겠습니까?")) {
             $.ajax({
-                url: `/${domain}/menu/delete`,
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({ no: menuNo })
+                url: `/${domain}/menu/${menuNo}`,
+                type: 'DELETE'
             })
             .done(function(response) {
                 if (response === 'success') {
@@ -64,8 +62,8 @@ $(document).ready(function() {
         };
         if (confirm("메뉴를 추가하시겠습니까?")) {
             $.ajax({
-                url: `/${domain}/menu/create`,
-                type: 'POST',
+                url: `/${domain}/menu`,
+                type: 'PUT',
                 contentType: 'application/json',
                 data: JSON.stringify(menuData)
             })
@@ -97,8 +95,8 @@ $(document).ready(function() {
 
         if (confirm("그룹을 추가하시겠습니까?")) {
             $.ajax({
-                url: `/${domain}/menu/create`,
-                type: 'POST',
+                url: `/${domain}/menu`,
+                type: 'PUT',
                 contentType: 'application/json',
                 data: JSON.stringify(menuData)
             })
@@ -134,8 +132,8 @@ $(document).ready(function() {
 
         if (confirm("메뉴를 수정하시겠습니까?")) {
             $.ajax({
-                url: `/${domain}/menu/edit`,
-                type: 'POST',
+                url: `/${domain}/menu`,
+                type: 'Patch',
                 contentType: 'application/json',
                 data: JSON.stringify(menuData)
             })

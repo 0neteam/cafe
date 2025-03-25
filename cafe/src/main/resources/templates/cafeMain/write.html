@@ -8,6 +8,141 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>글쓰기 폼</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/image@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/attaches@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/inline-code@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/delimiter@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/checklist@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/code@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/raw@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/marker@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/quote@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/table@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/nested-list@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/paragraph@latest"></script>
+    <style type="text/css">
+        * {box-sizing: border-box;}
+        body {margin: 0; padding: 0;}
+        main {margin: 50px 10vw 0;}
+        #title {margin: 10px 0;}
+        #editorjs {background-color: #d3e3fd; min-height: 40vh;}
+        .ce-block__content {
+        max-width: 100% !important;
+        padding: 0 20px;
+      }
+      .ce-toolbar__content {
+        max-width: 100% !important;
+      }
+      .codex-editor__redactor {
+        padding-bottom: 0 !important;
+        margin-right: 0 !important;
+      }
+    </style>
+    <script>
+        $(document).ready(() => {
+
+            const fileUpload = async (file) => {
+              const formData = new FormData()
+              formData.append("file", file)
+
+              try {
+                const response = await axios({
+                  method: 'POST',
+                  url: 'http://d.0neteam.co.kr:9000/file/upload',
+                  data: formData
+                });
+                return response.data;
+              } catch (error) {
+                console.error(error);
+              }
+
+              return new Promise((resolve, reject) => {
+                resolve({
+                  success: 0,
+                  file: {url: ''}
+                })
+              });
+            }
+
+            const editor = new EditorJS({
+              holder : 'editorjs',
+              data: {blocks: []},
+              //readOnly: true, // 상세보기에서 사용하는 옵션 설정
+              tools: {
+                paragraph: {
+                  class: Paragraph,
+                  config: {placeholder: '내용을 입력하세요.'},
+                  inlineToolbar: true
+                },
+                header: {
+                  class: Header,
+                  inlineToolbar : true
+                },
+                quote: {
+                  class: Quote,
+                  inlineToolbar: true,
+                  config: {
+                    quotePlaceholder: 'Enter a quote',
+                    captionPlaceholder: 'Quote\'s author',
+                  },
+                  shortcut: 'CMD+SHIFT+O'
+                },
+                marker: {
+                  class: Marker,
+                  shortcut: 'CMD+SHIFT+M',
+                },
+                delimiter: Delimiter,
+                table: {
+                  class: Table,
+                  inlineToolbar: true,
+                  shortcut: 'CMD+ALT+T'
+                },
+                list: {
+                  class: NestedList,
+                  inlineToolbar: true,
+                  config: {defaultStyle: 'unordered'},
+                  shortcut: 'CMD+SHIFT+L'
+                },
+                raw: RawTool,
+                code: CodeTool,
+                inlineCode: {
+                  class: InlineCode,
+                  shortcut: 'CMD+SHIFT+M',
+                },
+                checklist: {
+                  class: Checklist,
+                  inlineToolbar: true,
+                },
+                image: {
+                  class: ImageTool,
+                  config: {
+                    uploader: {
+                        uploadByFile(file){
+                          return fileUpload(file)
+                        }
+                    },
+                    field: 'image',
+                    types: 'image/*'
+                  }
+                },
+                attaches: {
+                  class: AttachesTool,
+                  config: {
+                    uploader: {
+                      uploadByFile(file) {
+                        return fileUpload(file)
+                      }
+                    }
+                  }
+                },
+              }
+            });
+
+        });
+    </script>
 </head>
 
 <body th:attr="data-domain=${domain}">
@@ -42,9 +177,10 @@
                 </div>
 
                 <div class="mb-4">
-                    <label for="content" class="form-label">내용물 (에디터 사용)</label>
+                    <label for="editorjs" class="form-label">내용물 (에디터 사용)</label>
                     <!-- <textarea id="content" class="form-control" rows="16" th:field="*{content}" placeholder="에디터"></textarea> -->
-                    <textarea id="content" class="form-control" rows="16" placeholder="에디터"></textarea>
+<!--                    <textarea id="content" class="form-control" rows="16" placeholder="에디터"></textarea>-->
+                    <div id="editorjs"></div>
                 </div>
 
                 <div class="d-flex justify-content-center gap-2">

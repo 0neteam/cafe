@@ -27,7 +27,7 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name="menuNo", referencedColumnName = "no", nullable = false)
-    Menu menu;
+    private Menu menu;
 
     @Column(nullable = false, length = 100)
     private String title;
@@ -35,7 +35,7 @@ public class Post {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    @Column(nullable = false)
+    @Column(nullable = false, insertable = false, updatable = false)
     private Date regUserNo;
 
     @Column(nullable = false)
@@ -52,5 +52,9 @@ public class Post {
 
     @Column(nullable = false)
     private char useYN;
+
+    @OneToOne
+    @JoinColumn(name = "regUserNo", referencedColumnName = "no")
+    private User user;
 
 }
