@@ -70,21 +70,20 @@
 
         $(document).ready(() => {
 
-            const resetEvent = () => document.location.reload();
-
             $("#reset").on("click", () => {
                 document.location.href = `/${$("#domain").val()}`;
             });
 
             $("form").on("submit", e => {
                 e.preventDefault();
+                const domain = document.location.pathname;
                 $.ajax({
-                    url: `/${$("#domain").val()}/info`,
+                    url: domain,
                     method: "Patch",
                     data: $(e.target).serialize()
                 }).done(res => {
                     if(res === "success") {
-                        resetEvent();
+                        document.location.href = `/${$("#domain").val()}/info`;
                     } else {
                         alert("님이 잘 못 함");
                     }

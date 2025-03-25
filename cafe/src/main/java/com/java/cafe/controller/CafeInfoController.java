@@ -30,12 +30,13 @@ public class CafeInfoController {
     try {
       Board board = cafeEachService.cafeBaseInfo(1, domain)
           .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시판입니다: domain=" + domain));
-
+      System.out.println(board);
       board.setName(boardDTO.getName());
       board.setDomain(boardDTO.getDomain());
       board.setDescription(boardDTO.getDescription());
-
-      cafeEachService.save(board);
+      System.out.println(board);
+      board = cafeEachService.save(board);
+      System.out.println(board);
       return "success";
     } catch (Exception e) {
       return "fail";
