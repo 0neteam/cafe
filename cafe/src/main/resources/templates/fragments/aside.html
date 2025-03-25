@@ -14,8 +14,10 @@
 			</div>
 			<hr class="border-secondary">
 			<div class="cafeInfoComp">
-				<a class="nav-link bi bi-person-check-fill no-link text-nowrap" href="#!"> 운영자이름</a>
-				<p class="bi bi-calendar-event text-nowrap"> 개설일자</p>
+
+				<a class="nav-link bi bi-person-check-fill no-link text-nowrap" href="#!" th:text="${boardDTO.regUserNo}"></a>
+				<p class="bi bi-calendar-event text-nowrap" th:text="${boardDTO.regDate}"></p>
+
 				<a class="nav-link text-secondary bi bi-gear-fill no-link text-nowrap" th:href="@{'/'+${boardDTO.domain}+'/info'}"> 카페 설정</a>
 			</div>
 			<div class="myHistoryComp">
@@ -52,33 +54,43 @@
 		<input type="text" class="form-control border-warning" id="search1">
 		<button class="btn btn-warning text-dark" type="submit">검색</button>
 		</div>
-	</form> 
-	
+	</form>
 
-	<div class="list-group list-group-flush">
-	<a class="list-group-item list-group-item-action" data-bs-toggle="collapse" href="#menuGroup1" aria-expanded="true">menu1</a>
-	<div class="collapse show" id="menuGroup1">
-		<div class="border-bottom">
-		<a class="list-group-item ps-4" href="#!" aria-expanded="true">menu1-1</a>
-		<a class="list-group-item ps-4" href="#!" aria-expanded="true">menu1-2</a>
+
+		<div class="list-group list-group-flush" th:if="${menuList != null}">
+			<div th:each="menu, stat : ${menuList}">
+				<a th:if="${menu.depth == 1}"
+				   class="list-group-item"
+				   style="border: 1px solid rgb(240, 240, 240);"
+				   href="#!"
+				   th:text="${menu.name}">
+				</a>
+
+				<div th:if="${menu.depth != 1}"
+					style="border-radius: 3px">
+					<a th:if="${menu.depth != 1}"
+						class="list-group-item list-group-item-action"
+						style="border: 1px solid rgb(215, 215, 215); font-weight: bold;"
+						th:attr="data-bs-toggle='collapse', aria-expanded='true'"
+						th:href="'#menuGroup' + ${stat.index}"
+						th:text="${menu.name}">
+					</a>
+					<div class="collapse" th:id="'menuGroup' + ${stat.index}">
+						<a th:each="child : ${menu.children}"
+						   class="list-group-item ps-4 d-flex justify-content-between align-items-center"
+						   style="border: 1px solid rgb(240, 240, 240);"
+						   href="#!"
+						   th:data-menuRef="${child.ref}"
+						   th:data-menuNo="${child.no}"
+						   th:data-menuName="${child.name}">
+							<span th:text="${child.name}"></span>
+						</a>
+					</div>
+				</div>
+			</div>
 		</div>
-	</div>
-	<a class="list-group-item list-group-item-action" data-bs-toggle="collapse" href="#menuGroup2" aria-expanded="true">menu2</a>
-	<div class="collapse show" id="menuGroup2">
-		<div class="border-bottom">
-		<a class="list-group-item ps-4" href="#!" aria-expanded="true">menu2-1</a>
-		<a class="list-group-item ps-4" href="#!" aria-expanded="true">menu2-2</a>
-		</div>
-	</div>
-	<a class="list-group-item list-group-item-action" href="#menuGroup3" aria-expanded="true">menu3</a>
-	<div class="collapse show" id="menuGroup3">
-		<div class="border-bottom">
-		<a class="list-group-item ps-4" href="#!" aria-expanded="true">menu3-1</a>
-		<a class="list-group-item ps-4" href="#!" aria-expanded="true">menu3-2</a>
-		</div>
-	</div>
-	</div>
-	<script>
+
+		<script>
 		document.addEventListener('DOMContentLoaded', function() {
             // 기본적으로 cafeInfo만 보이게 설정
             document.querySelector('.cafeInfoComp').style.display = 'block';

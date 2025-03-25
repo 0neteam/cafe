@@ -165,38 +165,13 @@ public class CafeEachServiceImp implements CafeEachService {
 
 
 //    @Override
-//    public List<Post> getPostList(String domain, PostDTO postDTO) {
-//        Optional<Menu> menuSelect = menuRepository.findById(postDTO.getMenuNo());
-//        System.out.println("Executing query with domain: " + domain);
-//        if (menuSelect.isEmpty()) {
-//            throw new IllegalArgumentException("Board not found for menu: " + postDTO);
+//    public List<PostDTO> getPostList(Integer no) {
+//        Optional<Post> postList = postRepository.findBy;
+//        if (boardSelect.isEmpty()) {
+//            throw new IllegalArgumentException("Board not found for domain: " + domain);
 //        }
-//        Menu menu = menuSelect.get();
-//        Integer boardNo = menu.getNo();
-//
-//        System.out.println(boardNo);
-//        List<Menu> menus = menuRepository.findByBoardNoAndRefAndUseYNOrderByOrderNoAsc(boardNo, 0, 'Y');
-//        System.out.println(menus);
-//        List<MenuDTO> filterMenus = new ArrayList<>();
-
-//        for (Menu menu : menus) {
-//            List<Menu> filteredChildren = new ArrayList<>();
-//            for (Menu child : menu.getChildren()) {
-//                if (child.getUseYN() == 'Y') {
-//                    filteredChildren.add(child);
-//                }
-//            }
-//            filterMenus.add(new MenuDTO(
-//                    menu.getNo(),
-//                    menu.getBoard().getNo(),
-//                    menu.getOrderNo(),
-//                    menu.getDepth(),
-//                    menu.getName(),
-//                    menu.getRef(),
-//                    menu.getUseYN(),
-//                    filteredChildren
-//            ));
-//        }
+//        Board board = boardSelect.get();
+//        Integer boardNo = board.getNo();
 //        return null;
 //    }
 

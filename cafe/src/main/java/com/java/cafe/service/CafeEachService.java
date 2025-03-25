@@ -24,7 +24,7 @@ public interface CafeEachService {
 
     public List<MenuDTO> getMenuPost(String domain);
 
-//    public List<Post> getPostList(String domain, PostDTO postDTO);
+//    public List<PostDTO> getPostList(Integer no);
 //    public PostDTO createPost(PostDTO postDTO);
 
 }
