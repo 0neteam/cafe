@@ -33,7 +33,7 @@
         <div th:each="cafe : ${cafeList}" class="d-flex flex-column align-items-start mt-3">
             <ul class="container">
                 <li class="card cafe-card container my-1">
-                    <a th:href="@{'http://localhost:8001/'+${cafe.domain}}" class="text-dark">
+                    <a th:href="@{'/'+${cafe.domain}}" class="text-dark">
                         <div class="card-body">
                             <h5 class="card-title" th:text="${cafe.name}"></h5>
                             <p class="card-text mb-0 text-secondary" th:text="${cafe.description}"></p>

@@ -14,8 +14,10 @@
 			</div>
 			<hr class="border-secondary">
 			<div class="cafeInfoComp">
+
 				<a class="nav-link bi bi-person-check-fill no-link text-nowrap" href="#!" th:text="${boardDTO.regUserNo}"></a>
 				<p class="bi bi-calendar-event text-nowrap" th:text="${boardDTO.regDate}"></p>
+
 				<a class="nav-link text-secondary bi bi-gear-fill no-link text-nowrap" th:href="@{'/'+${boardDTO.domain}+'/info'}"> 카페 설정</a>
 			</div>
 			<div class="myHistoryComp">
