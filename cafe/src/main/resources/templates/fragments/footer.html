@@ -5,8 +5,8 @@
     <hr class="border-secondary">
     <div class="d-flex align-items-center justify-content-start">
         <p class="fw-bold mb-0">카페명</p>
-        <a class="nav-link active text-dark ms-3" href="#">cafe.0neteam.co.kr/카페주소</a>
-        <a class="nav-link active text-dark ms-3 ms-auto" href="#">카페홈LOGO</a>
+        <a class="nav-link active text-dark ms-3" th:href="@{'/'+${boardDTO.domain}+'/post'}"></a>
+        <a class="nav-link active text-dark ms-3 ms-auto" th:href="@{'/'}">카페홈LOGO</a>
     </div>
 </footer>
 </html>

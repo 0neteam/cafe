@@ -1,4 +1,5 @@
 spring:
+
   application:
     name: cafe
   config:
@@ -29,9 +30,9 @@ spring:
       max-request-size: 100MB
   
   # 복호화 키
-# access:
-#   keys:
-#     private: ${PRIVATE_KEY}
+access:
+  keys:
+    private: ${PRIVATE_KEY}
     
   # 개발중 사용
 server:
