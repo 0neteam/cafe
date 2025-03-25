@@ -87,6 +87,12 @@ public class CafeEachServiceImp implements CafeEachService {
         return filterMenus;
     }
 
+    @Override
+    public Menu getMenu(Integer no) {
+        Menu menu = menuRepository.findById(no).orElseThrow();
+        return menu;
+    }
+
     // 메뉴 생성
     @Override
     public MenuDTO createMenu(String domain, MenuDTO menuDTO) {
@@ -130,50 +136,10 @@ public class CafeEachServiceImp implements CafeEachService {
         return "success";
     }
 
-    // 자식 게시판 조회
     @Override
-    public List<MenuDTO> getMenuPost(String domain) {
-    Optional<Board> boardSelect = boardRepository.findByTypeAndDomain(1, domain);
-    if (boardSelect.isEmpty()) {
-        throw new IllegalArgumentException("Board not found for domain: " + domain);
+    public List<Post> getPostList(Integer no) {
+        return postRepository.findByMenuNoAndUseYN(no, 'Y');
     }
-    Board board = boardSelect.get();
-    Integer boardNo = board.getNo();
-
-    List<Menu> menus = menuRepository.findByBoardNoAndRefAndUseYNOrderByOrderNoAsc(boardNo, 0, 'Y');
-    List<MenuDTO> filterMenus = new ArrayList<>();
-
-    for (Menu menu : menus) {
-        List<Menu> filteredChildren = menu.getChildren().stream()
-            .filter(child -> child.getUseYN() == 'Y' && child.getDepth() > 0)  // 자식만 필터링
-            .collect(Collectors.toList());
-
-        filterMenus.add(new MenuDTO(
-            menu.getNo(),
-            menu.getBoard().getNo(),
-            menu.getOrderNo(),
-            menu.getDepth(),
-            menu.getName(),
-            menu.getRef(),
-            menu.getUseYN(),
-            filteredChildren // 필터링된 children 리스트
-        ));
-    }
-
-    return filterMenus;
-    }
-
-
-//    @Override
-//    public List<PostDTO> getPostList(Integer no) {
-//        Optional<Post> postList = postRepository.findBy;
-//        if (boardSelect.isEmpty()) {
-//            throw new IllegalArgumentException("Board not found for domain: " + domain);
-//        }
-//        Board board = boardSelect.get();
-//        Integer boardNo = board.getNo();
-//        return null;
-//    }
 
 //    @Override
 //    public PostDTO createPost(PostDTO postDTO) {

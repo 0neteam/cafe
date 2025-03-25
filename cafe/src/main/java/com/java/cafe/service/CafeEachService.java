@@ -18,13 +18,12 @@ public interface CafeEachService {
     public BoardDTO cafeInfo(int type, String domain); //카페 가입정보
 
     public List<MenuDTO> getMenuList(String domain);
+    public Menu getMenu(Integer no);
     public MenuDTO createMenu(String domain, MenuDTO menuDTO);
     public MenuDTO editMenu(String domain, MenuDTO menuDTO);
     public String deleteMenu(String domain, Integer no);
 
-    public List<MenuDTO> getMenuPost(String domain);
-
-//    public List<PostDTO> getPostList(Integer no);
+    public List<Post> getPostList(Integer no);
 //    public PostDTO createPost(PostDTO postDTO);
 
 }

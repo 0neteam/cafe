@@ -21,6 +21,8 @@ public class CafeMenuController {
     List<MenuDTO> menuList = cafeEachService.getMenuList(domain);
     model.addAttribute("menuList", menuList);
     model.addAttribute("domain", domain);
+    System.out.println("menuList ++++++++++++++ : " + menuList);
+    System.out.println("model ------------ : " + model);
     return "cafeMain/menuManage";
   }
 

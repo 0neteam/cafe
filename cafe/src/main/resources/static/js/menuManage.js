@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-    const domain = $('body').data('domain');
+    const domain = document.location.pathname
 
     // 부모 메뉴 클릭
     $('#menuList').on('click', '> li > div > span', function() {
@@ -28,21 +28,21 @@ $(document).ready(function() {
 
         if (confirm("메뉴를 삭제하시겠습니까?")) {
             $.ajax({
-                url: `/${domain}/menu/${menuNo}`,
+                url: domain + '/' + `${menuNo}`,
                 type: 'DELETE'
             })
-            .done(function(response) {
-                if (response === 'success') {
-                    alert('삭제 성공');
-                    menuItem.remove();
-                } else {
+                .done(function(response) {
+                    if (response === 'success') {
+                        alert('삭제 성공');
+                        menuItem.remove();
+                    } else {
+                        alert('삭제 실패');
+                    }
+                })
+                .fail(function(error) {
+                    console.error('Error:', error);
                     alert('삭제 실패');
-                }
-            })
-            .fail(function(error) {
-                console.error('Error:', error);
-                alert('삭제 실패');
-            });
+                });
         }
     });
 
@@ -62,19 +62,19 @@ $(document).ready(function() {
         };
         if (confirm("메뉴를 추가하시겠습니까?")) {
             $.ajax({
-                url: `/${domain}/menu`,
+                url: domain,
                 type: 'PUT',
                 contentType: 'application/json',
                 data: JSON.stringify(menuData)
             })
-            .done(function(response) {
-                alert('추가 성공');
-                location.reload();
-            })
-            .fail(function(error) {
-                console.error('Error:', error);
-                alert('추가 실패');
-            });
+                .done(function(response) {
+                    alert('추가 성공');
+                    location.reload();
+                })
+                .fail(function(error) {
+                    console.error('Error:', error);
+                    alert('추가 실패');
+                });
         }
     });
 
@@ -95,19 +95,19 @@ $(document).ready(function() {
 
         if (confirm("그룹을 추가하시겠습니까?")) {
             $.ajax({
-                url: `/${domain}/menu`,
+                url: domain,
                 type: 'PUT',
                 contentType: 'application/json',
                 data: JSON.stringify(menuData)
             })
-            .done(function(response) {
-                alert('추가 성공');
-                location.reload();
-            })
-            .fail(function(error) {
-                console.error('Error:', error);
-                alert('추가 실패');
-            });
+                .done(function(response) {
+                    alert('추가 성공');
+                    location.reload();
+                })
+                .fail(function(error) {
+                    console.error('Error:', error);
+                    alert('추가 실패');
+                });
         }
     });
 
@@ -132,19 +132,19 @@ $(document).ready(function() {
 
         if (confirm("메뉴를 수정하시겠습니까?")) {
             $.ajax({
-                url: `/${domain}/menu`,
+                url: domain,
                 type: 'Patch',
                 contentType: 'application/json',
                 data: JSON.stringify(menuData)
             })
-            .done(function(response) {
-                alert('수정 완료');
-                location.reload();
-            })
-            .fail(function(error) {
-                console.error('Error:', error);
-                alert('수정 실패');
-            });
+                .done(function(response) {
+                    alert('수정 완료');
+                    location.reload();
+                })
+                .fail(function(error) {
+                    console.error('Error:', error);
+                    alert('수정 실패');
+                });
         }
     });
 
@@ -187,5 +187,5 @@ $(document).ready(function() {
         $('#add').show();
         $('#edit').hide();
     }
-    
+
 });
