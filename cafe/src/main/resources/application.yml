@@ -3,10 +3,10 @@ spring:
   application:
     name: cafe
   config:
-  # ENV 설정
+    # ENV 설정
     import: optional:file:.env[.properties]
 
-# database 설정
+  # database 설정
   datasource:
     driver-class-name: ${DB_DRIVER}
     url: ${DB_URL}
@@ -30,10 +30,10 @@ spring:
       max-request-size: 100MB
   
   # 복호화 키
-access:
-  keys:
-    private: ${PRIVATE_KEY}
-    
+#access:
+#  keys:
+#    private: ${PRIVATE_KEY}
+
   # 개발중 사용
 server:
   port: 8001
