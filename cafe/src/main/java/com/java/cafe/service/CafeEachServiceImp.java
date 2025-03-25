@@ -25,6 +25,16 @@ public class CafeEachServiceImp implements CafeEachService {
     private final BoardRepository boardRepository;
     private final PostRepository postRepository;
 
+    @Override
+    public Board save(Board board) {
+        return boardRepository.save(board);
+    }
+
+    @Override
+    public Optional<Board> cafeBaseInfo(Integer type, String domain){
+        return boardRepository.findByTypeAndDomain(type, domain);
+    }
+
     // 카페 메인페이지 관련 정보
     @Override
     public BoardDTO cafeInfo(int type, String domain) {
@@ -112,8 +122,8 @@ public class CafeEachServiceImp implements CafeEachService {
 
     // 메뉴 삭제
     @Override
-    public String deleteMenu(String domain, MenuDTO menuDTO) {
-        Menu menu = menuRepository.findById(menuDTO.getNo())
+    public String deleteMenu(String domain, Integer no) {
+        Menu menu = menuRepository.findById(no)
                 .orElseThrow(() -> new RuntimeException("Menu not found"));
         menu.setUseYN('N');
         menuRepository.save(menu);

@@ -2,9 +2,12 @@ package com.java.cafe.controller;
 
 import com.java.cafe.dto.BoardDTO;
 import com.java.cafe.entity.Board;
+import com.java.cafe.entity.User;
+import com.java.cafe.repository.UserRepository;
 import com.java.cafe.service.CafeHomeService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,51 +18,28 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
+@Slf4j
 @Controller
 @AllArgsConstructor
-@RequestMapping("/cafe")
+@RequestMapping("/")
 public class CafeHomeController {
     private final CafeHomeService cafeHomeService;
 
-    @GetMapping("/home")
-    public String home(Model model){
-        List<Board> cafeList = cafeHomeService.homeCafeList(1,'Y');
-        model.addAttribute("cafeList", cafeList);
+    @GetMapping
+    public String home(@RequestParam(name = "keyword", required = false) String keyword, Model model){
+        cafeHomeService.searchCafeList(keyword, model);
         return "cafeHome/home";
     }
 
-    @GetMapping("")
-    public String cafedomain(){
-        return "redirect:/cafe/home";
-    }
-
-    @GetMapping("/home/create")
+    @PostMapping
     public String create(){
         return "cafeHome/cafeCreate";
     }
 
-    @PostMapping("/home/create")
+    @ResponseBody
+    @PutMapping
     public String createCafe(@ModelAttribute BoardDTO boardDTO) {
-        Board board = Board.builder()
-                .regUserNo(1)
-                .type(1)
-                .name(boardDTO.getName())
-                .domain(boardDTO.getDomain())
-                .description(boardDTO.getDescription())
-                .regDate(LocalDate.now())
-                .useYN('Y')
-                .build();
-        cafeHomeService.save(board);
-
-        return "redirect:/cafe/home";
+        return cafeHomeService.save(boardDTO);
     }
 
-    @GetMapping("/home/search")
-    public String SearchCafe(@RequestParam String keyward, Model model){
-        List<Board> cafeList = cafeHomeService.searchCafeList(keyward);
-        model.addAttribute("cafeList", cafeList);
-        model.addAttribute("keyward", keyward);
-        System.out.println("keyward : "+keyward);
-        return "cafeHome/cafeSearch";
-    }
 }

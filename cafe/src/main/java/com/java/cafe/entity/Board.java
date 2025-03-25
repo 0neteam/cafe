@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "board")
-@Data
+@Setter
+@Getter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -23,7 +25,7 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer no;
 
-    @Column(nullable = false)
+    @Column(nullable = false, insertable = false, updatable = false)
     private Integer regUserNo;
 
     @Column(nullable = false)
@@ -45,5 +47,9 @@ public class Board {
 
     @Column(nullable = false)
     private char useYN;
+
+    @OneToOne
+    @JoinColumn(name = "regUserNo", referencedColumnName = "no")
+    private User user;
 
 }

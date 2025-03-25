@@ -1,6 +1,5 @@
 server.port: 8001
 
-
 spring:
   application:
     name: cafe
@@ -19,24 +18,24 @@ spring:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
-  main:
-    debug: true
+#  main:
+#    debug: true
 
-management:
-  info:
-    git:
-      mode: full
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  metrics:
-    tags:
-      application: ${spring.application.name}
-  tracing:
-    enabled: false
-    sampling:
-      probability: 1.0
+#management:
+#  info:
+#    git:
+#      mode: full
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
+#  metrics:
+#    tags:
+#      application: ${spring.application.name}
+#  tracing:
+#    enabled: false
+#    sampling:
+#      probability: 1.0
 
 #springdoc:
 #  swagger-ui:
@@ -47,5 +46,9 @@ logging.level.org:
   springframework.security: trace
   hibernate.sql: debug
 
-jwt:
-  keys-uri: http://localhost:8000/oauth/.well-known/jwks.json
+#jwt:
+#  keys-uri: http://localhost:8000/oauth/.well-known/jwks.json
+
+rsa:
+  public-key: classpath:keys/public.pem
+  private-key: classpath:keys/private.pem
