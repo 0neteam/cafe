@@ -3,6 +3,8 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+.pem
+keys/
 
 ### STS ###
 .apt_generated
@@ -33,7 +35,6 @@ build/
 ### VS Code ###
 .vscode/
 .env
-access-keys/
 .github
 .metadata
 bin/
