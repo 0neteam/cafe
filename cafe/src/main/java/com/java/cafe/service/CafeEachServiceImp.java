@@ -3,20 +3,26 @@ package com.java.cafe.service;
 import com.java.cafe.dto.BoardDTO;
 import com.java.cafe.dto.MenuDTO;
 import com.java.cafe.dto.PostDTO;
+import com.java.cafe.dto.PostResDTO;
 import com.java.cafe.entity.Board;
 import com.java.cafe.entity.Menu;
 import com.java.cafe.entity.Post;
+import com.java.cafe.entity.User;
 import com.java.cafe.repository.BoardRepository;
 import com.java.cafe.repository.MenuRepository;
 import com.java.cafe.repository.PostRepository;
+import com.java.cafe.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class CafeEachServiceImp implements CafeEachService {
@@ -24,6 +30,7 @@ public class CafeEachServiceImp implements CafeEachService {
     private final MenuRepository menuRepository;
     private final BoardRepository boardRepository;
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
     @Override
     public Board save(Board board) {
@@ -148,6 +155,98 @@ public class CafeEachServiceImp implements CafeEachService {
     @Override
     public List<Post> getPostList(Integer no) {
         return postRepository.findByMenuNoAndUseYN(no, 'Y');
+    }
+
+    @Override
+    public PostResDTO writeCreate(PostDTO postDTO) {
+        String status = "fail";
+        int no = 0;
+        try {
+            Menu menu = menuRepository.findById(postDTO.getMenuNo()).orElseThrow();
+            User user = userRepository.findById(1).orElseThrow();
+            Post post = Post.builder()
+                    .menu(menu)
+                    .title(postDTO.getTitle())
+                    .content(postDTO.getContent())
+
+                    // 추가 받아와야 하는 데이터
+                    .regUserNo(1)
+                    .viewCount(0)
+                    .useYN('Y')
+                    .user(user)
+
+                    .build();
+            post = postRepository.save(post);
+            if(post.getNo() > 0) {
+                status = "success";
+                no = post.getNo();
+            }
+        } catch (Exception e) {}
+        //return "fail";
+        return PostResDTO.builder()
+                .status(status)
+                .no(no)
+                .build();
+    }
+
+    @Override
+    public void read(String domain, Integer no, Model model) {
+        Post post = postRepository.findById(no).orElseThrow();
+        PostDTO postDTO = PostDTO.builder().build();
+        if(post != null) {
+            postDTO = PostDTO.builder()
+                    .no(post.getNo())
+                    .menuNo(post.getMenu().getNo())
+                    .title(post.getTitle())
+                    .content(post.getContent())
+                    .regName(post.getUser().getName())
+                    .menuName(post.getMenu().getName())
+                    .regDate(post.getRegDate())
+                    .viewCount(post.getViewCount())
+                    .build();
+        }
+        model.addAttribute("post", postDTO);
+
+    }
+
+    @Override
+    public PostResDTO writeEdit(Integer no, PostDTO postDTO) {
+        postDTO.setNo(no);
+        log.info("No : {}, POST : {}", no, postDTO);
+        String status = "fail";
+        try {
+            Menu menu = menuRepository.findById(postDTO.getMenuNo()).orElseThrow();
+            User user = userRepository.findById(1).orElseThrow();
+            Post post = postRepository.findById(no).orElseThrow();
+            post.setTitle(postDTO.getTitle());
+            post.setContent(postDTO.getContent());
+
+            post = postRepository.save(post);
+            if(post.getNo() > 0) {
+                status = "success";
+            }
+        } catch (Exception e) {}
+        return PostResDTO.builder()
+                .status(status)
+                .no(no)
+                .build();
+    }
+
+    @Override
+    public PostResDTO writeDel(Integer no) {
+        String status = "fail";
+        try {
+            Post post = postRepository.findById(no).orElseThrow();
+            post.setUseYN('N');
+            post = postRepository.save(post);
+            if(post.getNo() > 0) {
+                status = "success";
+            }
+        } catch (Exception e) {}
+        return PostResDTO.builder()
+                .status(status)
+                .no(no)
+                .build();
     }
 
 }
