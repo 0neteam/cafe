@@ -22,7 +22,7 @@ public class CafePostController {
   // 포스트 작성 화면
   @GetMapping
   public String write(@PathVariable("domain") String domain, Model model) {
-    List<MenuDTO> menuList = cafeEachService.getMenuPost(domain);
+    List<MenuDTO> menuList = cafeEachService.getMenuList(domain);
     model.addAttribute("menuList", menuList);
     model.addAttribute("domain", domain);
     return "cafeMain/write";

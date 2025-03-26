@@ -8,5 +8,6 @@ import java.util.List;
 public interface MenuRepository extends JpaRepository<Menu, Integer> {
 
     public List<Menu> findByBoardNoAndRefAndUseYNOrderByOrderNoAsc(Integer boardNo, Integer ref, char useYN);
+    public Integer countByBoardNoAndRef(Integer boardNo, Integer ref);
 
 }

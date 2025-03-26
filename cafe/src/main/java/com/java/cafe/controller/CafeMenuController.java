@@ -1,5 +1,6 @@
 package com.java.cafe.controller;
 
+import com.java.cafe.dto.BoardDTO;
 import com.java.cafe.dto.MenuDTO;
 import com.java.cafe.service.CafeEachService;
 import lombok.AllArgsConstructor;
@@ -18,9 +19,10 @@ public class CafeMenuController {
 
   @GetMapping
   public String getMenuList(@PathVariable String domain, Model model) {
+    BoardDTO boardDTO = cafeEachService.cafeInfo(1, domain);
+    model.addAttribute("boardDTO", boardDTO);
     List<MenuDTO> menuList = cafeEachService.getMenuList(domain);
     model.addAttribute("menuList", menuList);
-    model.addAttribute("domain", domain);
     return "cafeMain/menuManage";
   }
 
