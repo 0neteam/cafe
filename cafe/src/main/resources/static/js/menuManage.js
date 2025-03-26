@@ -162,8 +162,8 @@ $(document).ready(function() {
     });
 
     // 취소 버튼
-    $('#reset').on('click', function() {
-        setToAddMode();
+    $("#reset").on("click", () => {
+        document.location.href = domain.replace('/menu', '');
     });
 
     function setMenuName(menuName, menuNo, menuRef) {
@@ -176,16 +176,4 @@ $(document).ready(function() {
         $('#add').hide();
         $('#edit').show();
     }
-
-    function setToAddMode() {
-        $('#name').val('');
-        $('#no').val('');
-        $('#ref').val(0);
-        $('#reflabel').show();
-        $('#ref').show();
-        $('#groupadd').hide();
-        $('#add').show();
-        $('#edit').hide();
-    }
-
 });

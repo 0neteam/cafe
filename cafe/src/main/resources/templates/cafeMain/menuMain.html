@@ -29,10 +29,6 @@
     <div class="container-fluid">
         <div class="d-flex justify-content-between align-items-center my-4">
             <h2 class="mb-0" th:text="${menu.name}"></h2>
-            <button class="btn btn-success">
-                <a style="text-decoration-line: none; color: white;"
-                th:href="@{'/'+${boardDTO.domain}+'/post'}">글쓰기</a>
-            </button>
         </div>
         </div>
         <div class="d-flex flex-column align-items-start mt-3">
