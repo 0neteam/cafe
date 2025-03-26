@@ -3,9 +3,11 @@ package com.java.cafe.service;
 import com.java.cafe.dto.BoardDTO;
 import com.java.cafe.dto.MenuDTO;
 import com.java.cafe.dto.PostDTO;
+import com.java.cafe.dto.PostResDTO;
 import com.java.cafe.entity.Board;
 import com.java.cafe.entity.Menu;
 import com.java.cafe.entity.Post;
+import org.springframework.ui.Model;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +26,8 @@ public interface CafeEachService {
     public String deleteMenu(String domain, Integer no);
 
     public List<Post> getPostList(Integer no);
-//    public PostDTO createPost(PostDTO postDTO);
-
+    public PostResDTO writeCreate(PostDTO postDTO);
+    public void read(String domain, Integer no, Model model);
+    public PostResDTO writeEdit(Integer no, PostDTO postDTO);
+    public PostResDTO writeDel(Integer no);
 }

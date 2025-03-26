@@ -30,167 +30,187 @@
         #title {margin: 10px 0;}
         #editorjs {background-color: #d3e3fd; min-height: 40vh;}
         .ce-block__content {
-        max-width: 100% !important;
-        padding: 0 20px;
-      }
-      .ce-toolbar__content {
-        max-width: 100% !important;
-      }
-      .codex-editor__redactor {
-        padding-bottom: 0 !important;
-        margin-right: 0 !important;
-      }
+            max-width: 100% !important;
+            padding: 0 20px;
+        }
+        .ce-toolbar__content {
+            max-width: 100% !important;
+        }
+        .codex-editor__redactor {
+            padding-bottom: 0 !important;
+            margin-right: 0 !important;
+        }
     </style>
     <script>
         $(document).ready(() => {
 
-            const fileUpload = async (file) => {
-              const formData = new FormData()
-              formData.append("file", file)
-
-              try {
-                const response = await axios({
-                  method: 'POST',
-                  url: 'http://d.0neteam.co.kr:9000/file/upload',
-                  data: formData
+            $("form").on("submit", e => {
+                e.preventDefault();
+                editor.save().then(data => {
+                    if(data.blocks.length > 0) {
+                        // 에디터에 내용물이 존재 함!!
+                        let content = JSON.stringify(data.blocks);
+                        let param = {
+                            menuNo : $("#menuNo").val(),
+                            title : $("#title").val(),
+                            content
+                        }
+                        let url = "/" + $("body").attr("data-domain") + "/post";
+                        axios({
+                            method: 'PUT',
+                            url : url,
+                            data: param
+                        }).then(res => {
+                            if(res.data.status === 'success') {
+                                console.log(res);
+                                //editor.readOnly.toggle();
+                                document.location.href = url + "/" + res.data.no;
+                            }
+                        }).catch(err => console.log(err));
+                    }
                 });
-                return response.data;
-              } catch (error) {
-                console.error(error);
-              }
+            });
 
-              return new Promise((resolve, reject) => {
-                resolve({
-                  success: 0,
-                  file: {url: ''}
-                })
-              });
+            const fileUpload = async (file) => {
+                const formData = new FormData();
+                formData.append("file", file);
+
+                try {
+                    const response = await axios({
+                        method: 'POST',
+                        url: 'http://d.0neteam.co.kr:9000/file/upload',
+                        data: formData
+                    });
+                    return response.data;
+                } catch (error) {
+                    console.error(error);
+                }
+
+                return new Promise((resolve, reject) => {
+                    resolve({
+                        success: 0,
+                        file: {url: ''}
+                    })
+                });
             }
 
             const editor = new EditorJS({
-              holder : 'editorjs',
-              data: {blocks: []},
-              //readOnly: true, // 상세보기에서 사용하는 옵션 설정
-              tools: {
-                paragraph: {
-                  class: Paragraph,
-                  config: {placeholder: '내용을 입력하세요.'},
-                  inlineToolbar: true
-                },
-                header: {
-                  class: Header,
-                  inlineToolbar : true
-                },
-                quote: {
-                  class: Quote,
-                  inlineToolbar: true,
-                  config: {
-                    quotePlaceholder: 'Enter a quote',
-                    captionPlaceholder: 'Quote\'s author',
-                  },
-                  shortcut: 'CMD+SHIFT+O'
-                },
-                marker: {
-                  class: Marker,
-                  shortcut: 'CMD+SHIFT+M',
-                },
-                delimiter: Delimiter,
-                table: {
-                  class: Table,
-                  inlineToolbar: true,
-                  shortcut: 'CMD+ALT+T'
-                },
-                list: {
-                  class: NestedList,
-                  inlineToolbar: true,
-                  config: {defaultStyle: 'unordered'},
-                  shortcut: 'CMD+SHIFT+L'
-                },
-                raw: RawTool,
-                code: CodeTool,
-                inlineCode: {
-                  class: InlineCode,
-                  shortcut: 'CMD+SHIFT+M',
-                },
-                checklist: {
-                  class: Checklist,
-                  inlineToolbar: true,
-                },
-                image: {
-                  class: ImageTool,
-                  config: {
-                    uploader: {
-                        uploadByFile(file){
-                          return fileUpload(file)
+                holder : 'editorjs',
+                data: {blocks: []},
+                tools: {
+                    paragraph: {
+                        class: Paragraph,
+                        config: {placeholder: '내용을 입력하세요.'},
+                        inlineToolbar: true
+                    },
+                    header: {
+                        class: Header,
+                        inlineToolbar : true
+                    },
+                    quote: {
+                        class: Quote,
+                        inlineToolbar: true,
+                        config: {
+                            quotePlaceholder: 'Enter a quote',
+                            captionPlaceholder: 'Quote\'s author',
+                        },
+                        shortcut: 'CMD+SHIFT+O'
+                    },
+                    marker: {
+                        class: Marker,
+                        shortcut: 'CMD+SHIFT+M',
+                    },
+                    delimiter: Delimiter,
+                    table: {
+                        class: Table,
+                        inlineToolbar: true,
+                        shortcut: 'CMD+ALT+T'
+                    },
+                    list: {
+                        class: NestedList,
+                        inlineToolbar: true,
+                        config: {defaultStyle: 'unordered'},
+                        shortcut: 'CMD+SHIFT+L'
+                    },
+                    raw: RawTool,
+                    code: CodeTool,
+                    inlineCode: {
+                        class: InlineCode,
+                        shortcut: 'CMD+SHIFT+M',
+                    },
+                    checklist: {
+                        class: Checklist,
+                        inlineToolbar: true,
+                    },
+                    image: {
+                        class: ImageTool,
+                        config: {
+                            uploader: {
+                                uploadByFile(file){
+                                    return fileUpload(file)
+                                }
+                            },
+                            field: 'image',
+                            types: 'image/*'
                         }
                     },
-                    field: 'image',
-                    types: 'image/*'
-                  }
-                },
-                attaches: {
-                  class: AttachesTool,
-                  config: {
-                    uploader: {
-                      uploadByFile(file) {
-                        return fileUpload(file)
-                      }
-                    }
-                  }
-                },
-              }
+                    attaches: {
+                        class: AttachesTool,
+                        config: {
+                            uploader: {
+                                uploadByFile(file) {
+                                    return fileUpload(file)
+                                }
+                            }
+                        }
+                    },
+                }
             });
 
         });
     </script>
 </head>
-
 <body th:attr="data-domain=${domain}">
-    <main layout:fragment="content2">
-        <div class="container my-2">
-            <div class="d-flex justify-content-between align-items-center my-4">
-                <h2 class="mb-0">글쓰기</h2>
-            </div>
-            <!-- <form th:action="@{|/write/save|}" method="post" th:object="${postDTO}"> -->
-            <form th:action="@{|/write/save|}" method="post">
-                <div class="mb-3">
-                    <div class="mb-3">
-                        <select class="form-select mt-2 ps-3">
-                            <option value="" disabled selected>메뉴 선택</option>
-                            <option th:each="menu : ${menuList}"
-                                    th:if="${menu.depth > 0}"
-                                    th:value="${menu.no}"
-                                    th:data-menuNo="${menu.no}"
-                                    th:data-menuName="${menu.name}"
-                                    th:data-menuRef="${menu.ref}"
-                                    th:text="${menu.name}">
-                            </option>
-                        </select>                        
-                    </div>
-                    
-                </div>
-
-                <div class="mb-3">
-                    <label for="title" class="form-label">글 제목</label>
-                    <!-- <input type="text" id="title" class="form-control" th:field="*{title}" placeholder="제목을 입력하세요"> -->
-                    <input type="text" id="title" class="form-control" placeholder="제목을 입력하세요">
-                </div>
-
-                <div class="mb-4">
-                    <label for="editorjs" class="form-label">내용물 (에디터 사용)</label>
-                    <!-- <textarea id="content" class="form-control" rows="16" th:field="*{content}" placeholder="에디터"></textarea> -->
-<!--                    <textarea id="content" class="form-control" rows="16" placeholder="에디터"></textarea>-->
-                    <div id="editorjs"></div>
-                </div>
-
-                <div class="d-flex justify-content-center gap-2">
-                    <button type="submit" class="btn btn-success">등록</button>
-                    <button type="submit" class="btn btn-success">수정</button>
-                    <button type="button" class="btn btn-secondary">취소</button>
-                </div>
-            </form>
+<main layout:fragment="content2">
+    <div class="container my-2">
+        <div class="d-flex justify-content-between align-items-center my-4">
+            <h2 class="mb-0">글쓰기</h2>
         </div>
-    </main>
+        <!-- <form th:action="@{|/write/save|}" method="post" th:object="${postDTO}"> -->
+        <form>
+            <div class="mb-3">
+                <div class="mb-3">
+                    <select class="form-select mt-2 ps-3" id="menuNo">
+                        <option value="" disabled selected>메뉴 선택</option>
+                        <!-- children -->
+                        <th:block th:each="menu : ${menuList}">
+                            <option th:each="smenu : ${menu.children}" th:value="${smenu.no}" th:text="${smenu.name}"></option>
+                        </th:block>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="mb-3">
+                <label for="title" class="form-label">글 제목</label>
+                <!-- <input type="text" id="title" class="form-control" th:field="*{title}" placeholder="제목을 입력하세요"> -->
+                <input type="text" id="title" class="form-control" placeholder="제목을 입력하세요">
+            </div>
+
+            <div class="mb-4">
+                <label for="editorjs" class="form-label">내용물 (에디터 사용)</label>
+                <!-- <textarea id="content" class="form-control" rows="16" th:field="*{content}" placeholder="에디터"></textarea> -->
+                <!--                    <textarea id="content" class="form-control" rows="16" placeholder="에디터"></textarea>-->
+                <div id="editorjs"></div>
+            </div>
+
+            <div class="d-flex justify-content-center gap-2">
+                <button type="submit" class="btn btn-success">등록</button>
+                <button type="button" class="btn btn-secondary">취소</button>
+            </div>
+        </form>
+    </div>
+</main>
 </body>
 
 </html>

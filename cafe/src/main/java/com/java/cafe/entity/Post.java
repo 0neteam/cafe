@@ -36,7 +36,7 @@ public class Post {
     private String content;
 
     @Column(nullable = false, insertable = false, updatable = false)
-    private Date regUserNo;
+    private Integer regUserNo;
 
     @Column(nullable = false)
     @CreationTimestamp
@@ -44,8 +44,8 @@ public class Post {
     private LocalDateTime regDate;
 
     @Column
-    private Date modUserNo;
-    private Date modDate;
+    private Integer modUserNo;
+    private LocalDateTime modDate;
 
     @Column(nullable = false)
     private Integer viewCount;

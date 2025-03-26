@@ -2,6 +2,7 @@ package com.java.cafe.controller;
 
 import com.java.cafe.dto.MenuDTO;
 import com.java.cafe.dto.PostDTO;
+import com.java.cafe.dto.PostResDTO;
 import com.java.cafe.service.CafeEachService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ public class CafePostController {
   @GetMapping
   public String write(@PathVariable("domain") String domain, Model model) {
     List<MenuDTO> menuList = cafeEachService.getMenuList(domain);
+    log.info("MENU : {}", menuList);
     model.addAttribute("menuList", menuList);
     model.addAttribute("domain", domain);
     return "cafeMain/write";
@@ -31,30 +33,30 @@ public class CafePostController {
   // 포스트 나 보기
   @GetMapping("/{no:[0-9]+}")
   public String read(@PathVariable("domain") String domain, @PathVariable("no") Integer no, Model model) {
-    log.info("domain : {}, Post-No : {}", domain, no);
-    return "cafeMain/read";
+    cafeEachService.read(domain,no,model);
+    return "cafeMain/post";
   }
 
   // 포스트 저장
   @PutMapping
   @ResponseBody
-  public String writeCreate(@ModelAttribute PostDTO postDTO) {
-      return "redirect:/";
+  public PostResDTO writeCreate(@RequestBody PostDTO postDTO) {
+    return cafeEachService.writeCreate(postDTO);
   }
 
   // 포스트 수정
-  @PatchMapping
+  @PatchMapping("/{no:[0-9]+}")
   @ResponseBody
-  public String writeEdit(@ModelAttribute PostDTO postDTO) {
-      return "redirect:/";
+  public PostResDTO writeEdit(@PathVariable("no") Integer no, @RequestBody PostDTO postDTO) {
+    return cafeEachService.writeEdit(no, postDTO);
   }
 
   // 포스트 삭제
   @DeleteMapping("/{no:[0-9]+}")
   @ResponseBody
-  public String writeDelete(@PathVariable("domain") String domain, @PathVariable("no") Integer no) {
-    log.info("domain : {}, Post-No : {}", domain, no);
-    return "redirect:/";
+  public PostResDTO writeDelete(@PathVariable("domain") String domain, @PathVariable("no") Integer no) {
+    log.info("Post-No : {}", no);
+    return cafeEachService.writeDel(no);
   }
 
 }
