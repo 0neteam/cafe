@@ -1,5 +1,6 @@
 package com.java.cafe.service;
 
+import com.java.cafe.config.Utils;
 import com.java.cafe.dto.BoardDTO;
 import com.java.cafe.dto.MenuDTO;
 import com.java.cafe.dto.PostDTO;
@@ -12,11 +13,16 @@ import com.java.cafe.repository.BoardRepository;
 import com.java.cafe.repository.MenuRepository;
 import com.java.cafe.repository.PostRepository;
 import com.java.cafe.repository.UserRepository;
+
+import ch.qos.logback.classic.pattern.Util;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +37,7 @@ public class CafeEachServiceImp implements CafeEachService {
     private final BoardRepository boardRepository;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final Utils utils ;
 
     @Override
     public Board save(Board board) {
@@ -212,6 +219,8 @@ public class CafeEachServiceImp implements CafeEachService {
     @Override
     public PostResDTO writeEdit(Integer no, PostDTO postDTO) {
         postDTO.setNo(no);
+        // String StringUser = utils.getUserNo(req);
+        // int regUserNo = Integer.parseInt(StringUser);
         log.info("No : {}, POST : {}", no, postDTO);
         String status = "fail";
         try {
@@ -220,7 +229,8 @@ public class CafeEachServiceImp implements CafeEachService {
             Post post = postRepository.findById(no).orElseThrow();
             post.setTitle(postDTO.getTitle());
             post.setContent(postDTO.getContent());
-
+            post.setModDate(LocalDateTime.now());
+            post.setModUserNo(1);
             post = postRepository.save(post);
             if(post.getNo() > 0) {
                 status = "success";
