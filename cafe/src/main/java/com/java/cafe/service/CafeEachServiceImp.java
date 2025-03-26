@@ -103,9 +103,11 @@ public class CafeEachServiceImp implements CafeEachService {
         }
         Board board = boardSelect.get();
 
+        Integer orderNo = (menuRepository.countByBoardNoAndRef(board.getNo(), menuDTO.getRef())) + 1;
+
         Menu menu = Menu.builder()
                 .board(board)
-                .orderNo(1)
+                .orderNo(orderNo)
                 .depth(menuDTO.getDepth())
                 .name(menuDTO.getName())
                 .ref(menuDTO.getRef())
@@ -118,9 +120,16 @@ public class CafeEachServiceImp implements CafeEachService {
     // 메뉴 수정
     @Override
     public MenuDTO editMenu(String domain, MenuDTO menuDTO) {
+        Optional<Board> boardSelect = boardRepository.findByTypeAndDomain(1, domain);
+        if (boardSelect.isEmpty()) {
+            throw new IllegalArgumentException("Board not found for domain: " + domain);
+        }
+        Board board = boardSelect.get();
         Menu menu = menuRepository.findById(menuDTO.getNo())
                 .orElseThrow(() -> new RuntimeException("Menu not found"));
+        Integer orderNo = (menuRepository.countByBoardNoAndRef(board.getNo(), menuDTO.getRef())) + 1;
         menu.setName(menuDTO.getName());
+        menu.setOrderNo(orderNo);
         menu.setRef(menuDTO.getRef());
         menuRepository.save(menu);
         return menuDTO;
@@ -140,10 +149,5 @@ public class CafeEachServiceImp implements CafeEachService {
     public List<Post> getPostList(Integer no) {
         return postRepository.findByMenuNoAndUseYN(no, 'Y');
     }
-
-//    @Override
-//    public PostDTO createPost(PostDTO postDTO) {
-//        return null;
-//    }
 
 }

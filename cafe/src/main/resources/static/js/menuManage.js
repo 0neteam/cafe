@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-    const domain = document.location.pathname
+    const domain = document.location.pathname;
 
     // 부모 메뉴 클릭
     $('#menuList').on('click', '> li > div > span', function() {

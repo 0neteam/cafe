@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/default2}">
-      <!-- default2만 되고 1과 3이 안 됨 -->
+      layout:decorate="~{layouts/default}">
 
 <head>
     <meta charset="UTF-8">
@@ -26,11 +25,14 @@
     </style>
 </head>
 
-<main layout:fragment="content2" class="container my-2">
+<main layout:fragment="content" class="container my-2">
     <div class="container-fluid">
         <div class="d-flex justify-content-between align-items-center my-4">
             <h2 class="mb-0" th:text="${menu.name}"></h2>
-            <button class="btn btn-success">글쓰기</button>
+            <button class="btn btn-success">
+                <a style="text-decoration-line: none; color: white;"
+                th:href="@{'/'+${boardDTO.domain}+'/post'}">글쓰기</a>
+            </button>
         </div>
         </div>
         <div class="d-flex flex-column align-items-start mt-3">
