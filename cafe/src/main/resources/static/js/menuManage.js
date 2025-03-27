@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-    const domain = document.location.pathname;
+    let domain = "/" + $("body").attr("data-domain") + "/menu";
 
     // 부모 메뉴 클릭
     $('#menuList').on('click', '> li > div > span', function() {
@@ -8,7 +8,12 @@ $(document).ready(function() {
         const menuName = menuItem.data('menuname');
         const menuNo = menuItem.data('menuno');
         const menuRef = menuItem.data('menuref');
-        setMenuName(menuName, menuNo, menuRef);
+        const menuDepth = menuItem.data('menudepth');
+        if (menuDepth != 0) {
+            setMenuName(menuName, menuNo, menuRef)
+        } else {
+            setMenuGroup(menuName, menuNo);
+        }
     });
 
     // 자식 메뉴 클릭
@@ -27,96 +32,85 @@ $(document).ready(function() {
         const menuNo = menuItem.data('menuno');
 
         if (confirm("메뉴를 삭제하시겠습니까?")) {
-            $.ajax({
+            axios({
                 url: domain + '/' + `${menuNo}`,
-                type: 'DELETE'
+                method: 'DELETE'
             })
-                .done(function(response) {
-                    if (response === 'success') {
-                        alert('삭제 성공');
-                        menuItem.remove();
-                    } else {
-                        alert('삭제 실패');
-                    }
-                })
-                .fail(function(error) {
-                    console.error('Error:', error);
-                    alert('삭제 실패');
-                });
+            .then(res => {
+                if(res.data === 'success') {
+                    alert('삭제 성공');
+                    menuItem.remove();
+                }
+            }).catch(err => {
+                console.log(err)
+                alert('삭제 실패');
+            });
         }
     });
 
     // 추가 버튼
     $('#add').on('click', function() {
-        const menuName = $('#name').val();
-        const menuRef = $('#ref').val();
-        let menuDepth = 1;
+        let menuName = $('#name').val()
         if (!menuName) {
             alert('메뉴명을 입력해 주세요.');
             return;
         }
         const menuData = {
             name: menuName,
-            ref: menuRef,
-            depth: menuDepth
+            ref: $('#ref').val(),
+            depth: 1
         };
         if (confirm("메뉴를 추가하시겠습니까?")) {
-            $.ajax({
+            axios({
                 url: domain,
-                type: 'PUT',
-                contentType: 'application/json',
-                data: JSON.stringify(menuData)
+                method: 'PUT',
+                data: menuData
             })
-                .done(function(response) {
-                    alert('추가 성공');
-                    location.reload();
-                })
-                .fail(function(error) {
-                    console.error('Error:', error);
-                    alert('추가 실패');
-                });
+            .then(res => {
+                if(res.data === 'success') {
+                alert('추가 성공');
+                location.reload();
+            }
+            }).catch(err => {
+                console.log(err),
+                alert('추가 실패');
+            });
         }
     });
 
     // 그룹 추가 버튼
     $('#groupadd').on('click', function() {
         const menuName = $('#name').val();
-        const menuRef = 0;
-        let menuDepth = 0;
         if (!menuName) {
             alert('그룹명을 입력해 주세요.');
             return;
         }
         const menuData = {
             name: menuName,
-            ref: menuRef,
-            depth: menuDepth
+            ref: 0,
+            depth: 0
         };
-
         if (confirm("그룹을 추가하시겠습니까?")) {
-            $.ajax({
+            axios ({
                 url: domain,
-                type: 'PUT',
-                contentType: 'application/json',
-                data: JSON.stringify(menuData)
-            })
-                .done(function(response) {
+                method: 'PUT',
+                data: menuData
+            }).then(res => {
+                if(res.data === 'success') {
                     alert('추가 성공');
                     location.reload();
-                })
-                .fail(function(error) {
-                    console.error('Error:', error);
-                    alert('추가 실패');
-                });
+                }
+            }).catch(err => {
+                console.error('Error:', err);
+                alert('추가 실패');
+            });
         }
     });
 
     // 수정 버튼 클릭 시
     $('#edit').on('click', function() {
-        const menuNo = $('#no').val();
         const menuName = $('#name').val();
         const menuRef = $('#ref').val();
-        let menuDepth = 0;
         if (menuRef != 0) {
             menuDepth = 1;
         }
@@ -125,26 +119,25 @@ $(document).ready(function() {
             return;
         }
         const menuData = {
-            no: menuNo,
+            no: $('#no').val(),
             name: menuName,
             ref: menuRef
         };
 
         if (confirm("메뉴를 수정하시겠습니까?")) {
-            $.ajax({
+            axios({
                 url: domain,
-                type: 'Patch',
-                contentType: 'application/json',
-                data: JSON.stringify(menuData)
-            })
-                .done(function(response) {
-                    alert('수정 완료');
+                method: 'Patch',
+                data: menuData
+            }).then(res => {
+                if(res.data === 'success') {
+                    alert('수정 성공');
                     location.reload();
-                })
-                .fail(function(error) {
-                    console.error('Error:', error);
-                    alert('수정 실패');
-                });
+                }
+            }).catch(err => {
+                console.error('Error:', err);
+                alert('수정 실패');
+            });
         }
     });
 
@@ -167,11 +160,23 @@ $(document).ready(function() {
     });
 
     function setMenuName(menuName, menuNo, menuRef) {
+        $("label[for='name']").text('메뉴명 :');
         $('#name').val(menuName);
         $('#no').val(menuNo);
         $('#ref').val(menuRef);
         $('#reflabel').show();
         $('#ref').show();
+        $('#groupadd').hide();
+        $('#add').hide();
+        $('#edit').show();
+    }
+
+    function setMenuGroup(menuName, menuNo) {
+        $("label[for='name']").text('그룹명 :');
+        $('#name').val(menuName);
+        $('#no').val(menuNo);
+        $('#reflabel').hide();
+        $('#ref').hide();
         $('#groupadd').hide();
         $('#add').hide();
         $('#edit').show();
