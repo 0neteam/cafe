@@ -198,7 +198,7 @@
             </div>
 
             <div class="mb-4">
-                <label for="editorjs" class="form-label">내용물 (에디터 사용)</label>
+                <label for="editorjs" class="form-label">내용</label>
                 <!-- <textarea id="content" class="form-control" rows="16" th:field="*{content}" placeholder="에디터"></textarea> -->
                 <!--                    <textarea id="content" class="form-control" rows="16" placeholder="에디터"></textarea>-->
                 <div id="editorjs"></div>
@@ -206,7 +206,7 @@
 
             <div class="d-flex justify-content-center gap-2">
                 <button type="submit" class="btn btn-success">등록</button>
-                <button type="button" class="btn btn-secondary">취소</button>
+                <a type="button" class="btn btn-secondary" th:href="@{'/' + ${domain}}">취소</a>
             </div>
         </form>
     </div>

@@ -13,15 +13,11 @@ import com.java.cafe.repository.BoardRepository;
 import com.java.cafe.repository.MenuRepository;
 import com.java.cafe.repository.PostRepository;
 import com.java.cafe.repository.UserRepository;
-
-import ch.qos.logback.classic.pattern.Util;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,19 +35,37 @@ public class CafeEachServiceImp implements CafeEachService {
     private final UserRepository userRepository;
     private final Utils utils ;
 
+    // 카페 기본정보 수정하기
     @Override
     public Board save(Board board) {
         return boardRepository.save(board);
     }
 
+    // 카페 기본정보 수정페이지에 기본 정보 보이기
     @Override
     public Optional<Board> cafeBaseInfo(Integer type, String domain){
         return boardRepository.findByTypeAndDomain(type, domain);
     }
 
+    @Override
+    public String infoEdit(String domain, BoardDTO boardDTO){
+        try {
+            Board board = boardRepository.findByTypeAndDomain(1, domain)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시판입니다: domain=" + domain));
+            board.setName(boardDTO.getName());
+            board.setDomain(boardDTO.getDomain());
+            board.setDescription(boardDTO.getDescription());
+            boardRepository.save(board);
+            return "success";
+        } catch (Exception e) {
+            return "fail";
+        }
+    }
+
     // 카페 메인페이지 관련 정보
     @Override
-    public BoardDTO cafeInfo(int type, String domain) {
+    public String cafeInfo(String domain, Model model) {
+        int type = 1;
         Board board = boardRepository.findByTypeAndDomain(type, domain)
                 .orElseThrow(() -> new RuntimeException("도메인 정보를 찾을 수 없음"));
         BoardDTO boardDTO = new BoardDTO(
@@ -64,12 +78,18 @@ public class CafeEachServiceImp implements CafeEachService {
                 board.getDescription(),
                 board.getUseYN()
         );
-        return boardDTO;
+        String checkDomain = boardDTO.getDomain();
+        model.addAttribute("boardDTO", boardDTO);
+
+        if (domain.equals(checkDomain)) {
+            return "success";
+          }
+        return "fail";
     }
 
     // 메뉴 리스트 가져오기
     @Override
-    public List<MenuDTO> getMenuList(String domain) {
+    public List<MenuDTO> getMenuList(String domain, Model model) {
         Optional<Board> boardSelect = boardRepository.findByTypeAndDomain(1, domain);
         if (boardSelect.isEmpty()) {
             throw new IllegalArgumentException("Board not found for domain: " + domain);
@@ -98,12 +118,14 @@ public class CafeEachServiceImp implements CafeEachService {
                     filteredChildren // 필터링된 children 리스트
             ));
         }
+        model.addAttribute("menuList", filterMenus);
         return filterMenus;
     }
 
     @Override
-    public Menu getMenu(Integer no) {
+    public Menu getMenu(Integer no, Model model) {
         Menu menu = menuRepository.findById(no).orElseThrow();
+        model.addAttribute("menu", menu);
         return menu;
     }
 
@@ -160,8 +182,10 @@ public class CafeEachServiceImp implements CafeEachService {
     }
 
     @Override
-    public List<Post> getPostList(Integer no) {
-        return postRepository.findByMenuNoAndUseYN(no, 'Y');
+    public void getPostList(Integer no, Model model) {
+        List<Post> postList = postRepository.findByMenuNoAndUseYN(no, 'Y');
+        model.addAttribute("postList", postList);
+        // return postRepository.findByMenuNoAndUseYN(no, 'Y');
     }
 
     @Override

@@ -4,17 +4,13 @@ import com.java.cafe.dto.BoardDTO;
 import com.java.cafe.entity.Board;
 import com.java.cafe.entity.User;
 import com.java.cafe.repository.BoardRepository;
-
 import com.java.cafe.repository.UserRepository;
 import lombok.AllArgsConstructor;
-
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -26,6 +22,7 @@ public class CafeHomeServiceImp implements CafeHomeService {
     private final int TYPE = 1;
     private final char useYN = 'Y';
 
+    //카페 만들기
     @Override
     public String save(BoardDTO boardDTO) {
         try {
@@ -47,6 +44,7 @@ public class CafeHomeServiceImp implements CafeHomeService {
         }
     }
 
+    //카페 리스트 (검색, 조회)
     @Override
     public void searchCafeList(String keyword, Model model) {
         if(keyword == null) {
