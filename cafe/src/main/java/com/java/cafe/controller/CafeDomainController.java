@@ -39,7 +39,7 @@ public class CafeDomainController {
   @GetMapping("/{no:[0-9]+}")
   public String menuMain(@PathVariable(name = "domain") String domain, @PathVariable(name = "no") Integer no, Model model) {
     BoardDTO boardDTO = cafeEachService.cafeInfo(1, domain);
-    String checkDomain = boardDTO.getDomain();
+    // String checkDomain = boardDTO.getDomain();
     model.addAttribute("boardDTO", boardDTO);
     List<MenuDTO> menuList = cafeEachService.getMenuList(domain);
     model.addAttribute("menuList", menuList);
@@ -47,6 +47,7 @@ public class CafeDomainController {
     model.addAttribute("menu", menu);
     List<Post> postList = cafeEachService.getPostList(no);
     model.addAttribute("postList", postList);
+    System.out.println("--------------------------------여기부터시작"+postList);
     return "cafeMain/menuMain";
   }
 

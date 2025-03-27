@@ -79,7 +79,7 @@
 						<a th:each="child : ${menu.children}"
 						   class="list-group-item ps-4 d-flex justify-content-between align-items-center"
 						   style="border: 1px solid rgb(240, 240, 240);"
-						   th:href="@{'/' + ${boardDTO.domain} + '/' + ${menu.no}}"
+						   th:href="@{'/' + ${boardDTO.domain} + '/' + ${child.no}}"
 						   th:data-menuRef="${child.ref}"
 						   th:data-menuNo="${child.no}"
 						   th:data-menuName="${child.name}">

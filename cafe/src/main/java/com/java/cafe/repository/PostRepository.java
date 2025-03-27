@@ -9,5 +9,6 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Integer> {
 
     public List<Post> findByMenuNoAndUseYN(Integer no, char useYN);
+    public List<Post> findAllByMenuNoAndUseYN(Integer menuNo, char useYN);
 
 }

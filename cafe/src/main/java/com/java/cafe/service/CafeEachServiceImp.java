@@ -197,7 +197,8 @@ public class CafeEachServiceImp implements CafeEachService {
     }
 
     @Override
-    public void read(String domain, Integer no, Model model) {
+    public void read(String domain, Integer no, Model model, HttpServletRequest req) {
+        int loginUser = Integer.parseInt(utils.getUserNo(req));
         Post post = postRepository.findById(no).orElseThrow();
         PostDTO postDTO = PostDTO.builder().build();
         if(post != null) {
@@ -210,27 +211,62 @@ public class CafeEachServiceImp implements CafeEachService {
                     .menuName(post.getMenu().getName())
                     .regDate(post.getRegDate())
                     .viewCount(post.getViewCount())
+                    .regUserNo(post.getRegUserNo())
                     .build();
         }
+        Integer menuNo = postDTO.getMenuNo(); 
+        List<Post> postList = postRepository.findAllByMenuNoAndUseYN(menuNo, 'Y');
+        List<Integer> postNoList = postList.stream()
+                               .map(Post::getNo)
+                               .collect(Collectors.toList());
+        int nextIndex = 0;
+        int beforeIndex = 0;
+        int x = 0;
+        if(postNoList.size()>1){
+            for(x=0; x<postNoList.size(); x++){
+                if (postNoList.get(x) == postDTO.getNo()){
+                if (x == 0) {
+                        nextIndex = postNoList.get(x+1);
+                        break; 
+                    } else if (x == postNoList.size()-1) {
+                        beforeIndex = postNoList.get(x-1);
+                        break; 
+                    } else {
+                        beforeIndex = postNoList.get(x-1); //이전 번호
+                        nextIndex = postNoList.get(x+1); //다음 번호
+                        break; 
+                    }
+                } 
+            }
+        }
         model.addAttribute("post", postDTO);
+        model.addAttribute("loginUser", loginUser);
+        model.addAttribute("nextIndex", nextIndex);
+        model.addAttribute("beforeIndex", beforeIndex);
+        model.addAttribute("domain", domain);
+        System.out.println("--------------여기"+nextIndex);
+    
+
+        
 
     }
 
     @Override
-    public PostResDTO writeEdit(Integer no, PostDTO postDTO) {
+    public PostResDTO writeEdit(Integer no, PostDTO postDTO, HttpServletRequest req) {
         postDTO.setNo(no);
-        // String StringUser = utils.getUserNo(req);
-        // int regUserNo = Integer.parseInt(StringUser);
+        String loginUser = utils.getUserNo(req);
+        int modUserNo = Integer.parseInt(loginUser);
         log.info("No : {}, POST : {}", no, postDTO);
         String status = "fail";
-        try {
-            Menu menu = menuRepository.findById(postDTO.getMenuNo()).orElseThrow();
-            User user = userRepository.findById(1).orElseThrow();
+        
+        try {            
+            // Menu menu = menuRepository.findById(postDTO.getMenuNo()).orElseThrow();
+            // User user = userRepository.findById(1).orElseThrow();
             Post post = postRepository.findById(no).orElseThrow();
             post.setTitle(postDTO.getTitle());
             post.setContent(postDTO.getContent());
             post.setModDate(LocalDateTime.now());
-            post.setModUserNo(1);
+            post.setModUserNo(modUserNo);
             post = postRepository.save(post);
             if(post.getNo() > 0) {
                 status = "success";
