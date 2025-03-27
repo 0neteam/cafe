@@ -27,6 +27,7 @@ public class Utils {
         //쿠키 값 확인
         Cookie[] cookies = request.getCookies();
         //
+                
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("access_token".equals(cookie.getName())) {
@@ -49,9 +50,9 @@ public class Utils {
                         return "redirect:http://d.0neteam.co.kr:9000/oauth2/logout";
                     }
 
-                }
+                }else{userNo="0";}
             }
-        }
+        }else{ userNo="0";}
 
         return userNo;
     }

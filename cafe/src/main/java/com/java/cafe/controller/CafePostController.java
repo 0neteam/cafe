@@ -4,6 +4,9 @@ import com.java.cafe.dto.MenuDTO;
 import com.java.cafe.dto.PostDTO;
 import com.java.cafe.dto.PostResDTO;
 import com.java.cafe.service.CafeEachService;
+
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -32,8 +35,9 @@ public class CafePostController {
 
   // 포스트 나 보기
   @GetMapping("/{no:[0-9]+}")
-  public String read(@PathVariable("domain") String domain, @PathVariable("no") Integer no, Model model) {
-    cafeEachService.read(domain,no,model);
+  public String read(@PathVariable("domain") String domain, @PathVariable("no") Integer no, Model model, HttpServletRequest req) {
+    cafeEachService.read(domain, no, model, req);
+    System.out.println("가나다라마바사"+domain+req+no);
     return "cafeMain/post";
   }
 
@@ -47,8 +51,8 @@ public class CafePostController {
   // 포스트 수정
   @PatchMapping("/{no:[0-9]+}")
   @ResponseBody
-  public PostResDTO writeEdit(@PathVariable("no") Integer no, @RequestBody PostDTO postDTO) {
-    return cafeEachService.writeEdit(no, postDTO);
+  public PostResDTO writeEdit(@PathVariable("no") Integer no, @RequestBody PostDTO postDTO, HttpServletRequest req) {
+    return cafeEachService.writeEdit(no, postDTO, req);
   }
 
   // 포스트 삭제

@@ -30,7 +30,7 @@ public interface CafeEachService {
 
     public List<Post> getPostList(Integer no);
     public PostResDTO writeCreate(PostDTO postDTO);
-    public void read(String domain, Integer no, Model model);
-    public PostResDTO writeEdit(Integer no, PostDTO postDTO);
+    public void read(String domain, Integer no, Model model, HttpServletRequest req);
+    public PostResDTO writeEdit(Integer no, PostDTO postDTO, HttpServletRequest req);
     public PostResDTO writeDel(Integer no);
 }
