@@ -10,15 +10,27 @@
 </head>
 
     <main layout:fragment="content" class="container-fluid" style="min-height: 100vh;">
+        <h3 class="my-4" th:text="${boardDTO.name}"></h3>
         <div class="d-flex" style="margin-top: 10px;">
-            <div class="flex-fill">
-                <ul class="list-group">
-                    <li class="list-group-item">An item</li>
-                    <li class="list-group-item">A second item</li>
-                    <li class="list-group-item">A third item</li>
-                    <li class="list-group-item">A fourth item</li>
-                    <li class="list-group-item">And a fifth one</li>
-                </ul>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>글 제목</th>
+                            <th class="text-end">작성자</th>
+                            <th class="text-end">작성일</th>
+                        </tr>
+                    </thead>
+                    <tbody th:if="${post != null}" th:each="post : ${postList}">
+                        <tr>
+                            <td>
+                                <a th:text="${post.title}" th:href="@{'/' + ${boardDTO.domain} + '/post/' + ${post.no}}"></a>
+                            </td>
+                            <td class="text-end" th:text="${post.regUserNo}"></td>
+                            <td class="text-end" th:text="${post.regDate}"></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </main>
