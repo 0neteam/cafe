@@ -1,11 +1,15 @@
 package com.java.cafe.service;
 
+import com.java.cafe.config.Utils;
 import com.java.cafe.dto.BoardDTO;
 import com.java.cafe.entity.Board;
+import com.java.cafe.entity.Post;
 import com.java.cafe.entity.User;
 import com.java.cafe.repository.BoardRepository;
 
 import com.java.cafe.repository.UserRepository;
+
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 
 import org.springframework.data.domain.Sort;
@@ -22,14 +26,17 @@ public class CafeHomeServiceImp implements CafeHomeService {
 
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
+    private final Utils utils;
 
     private final int TYPE = 1;
     private final char useYN = 'Y';
 
     @Override
-    public String save(BoardDTO boardDTO) {
+    public String save(BoardDTO boardDTO, HttpServletRequest req) {
+        int loginUser = Integer.parseInt(utils.getUserNo(req));
+        
         try {
-            User user = userRepository.findById(1).orElseThrow();
+            User user = userRepository.findById(loginUser).orElseThrow();
             Board board = Board.builder()
                 .regUserNo(user.getNo())
                 .type(TYPE)

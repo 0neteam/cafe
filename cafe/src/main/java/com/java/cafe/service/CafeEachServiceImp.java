@@ -165,19 +165,20 @@ public class CafeEachServiceImp implements CafeEachService {
     }
 
     @Override
-    public PostResDTO writeCreate(PostDTO postDTO) {
+    public PostResDTO writeCreate(PostDTO postDTO, HttpServletRequest req) {
         String status = "fail";
+        int loginUser = Integer.parseInt(utils.getUserNo(req));
         int no = 0;
         try {
             Menu menu = menuRepository.findById(postDTO.getMenuNo()).orElseThrow();
-            User user = userRepository.findById(1).orElseThrow();
+            User user = userRepository.findById(loginUser).orElseThrow();
             Post post = Post.builder()
                     .menu(menu)
                     .title(postDTO.getTitle())
                     .content(postDTO.getContent())
 
                     // 추가 받아와야 하는 데이터
-                    .regUserNo(1)
+                    .regUserNo(loginUser)
                     .viewCount(0)
                     .useYN('Y')
                     .user(user)

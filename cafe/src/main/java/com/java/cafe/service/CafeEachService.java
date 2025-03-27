@@ -29,7 +29,7 @@ public interface CafeEachService {
     public String deleteMenu(String domain, Integer no);
 
     public List<Post> getPostList(Integer no);
-    public PostResDTO writeCreate(PostDTO postDTO);
+    public PostResDTO writeCreate(PostDTO postDTO, HttpServletRequest req);
     public void read(String domain, Integer no, Model model, HttpServletRequest req);
     public PostResDTO writeEdit(Integer no, PostDTO postDTO, HttpServletRequest req);
     public PostResDTO writeDel(Integer no);

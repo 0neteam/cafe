@@ -22,6 +22,7 @@
     </style>
 </head>
 
+<body th:attr="data-domain=${domain}">
 <main layout:fragment="content3" class="container my-2" style="min-height: 50vh;">
     <div class="container my-2">
         <div class="d-flex justify-content-between align-items-center my-4">
@@ -70,6 +71,8 @@
 
         $(document).ready(() => {
 
+            let beforeDomain = "/" + $("body").attr("data-domain");
+
             const resetEvent = () => document.location.reload();
 
             $("#reset").on("click", () => {
@@ -79,12 +82,12 @@
             $("form").on("submit", e => {
                 e.preventDefault();
                 $.ajax({
-                    url: `/${$("#domain").val()}/info`,
+                    url: beforeDomain + `/info`,
                     method: "Patch",
                     data: $(e.target).serialize()
                 }).done(res => {
                     if(res === "success") {
-                        resetEvent();
+                        document.location.href = `/${$("#domain").val()}/info`;
                     } else {
                         alert("님이 잘 못 함");
                     }
@@ -108,4 +111,5 @@
 
     </script>
 </main>
+</body>
 </html>
