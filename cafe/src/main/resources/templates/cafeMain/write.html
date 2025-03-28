@@ -59,6 +59,7 @@
                         axios({
                             method: 'PUT',
                             url : url,
+                            withCredentials: true,
                             data: param
                         }).then(res => {
                             if(res.data.status === 'success') {
@@ -79,6 +80,7 @@
                     const response = await axios({
                         method: 'POST',
                         url: 'http://d.0neteam.co.kr:9000/file/upload',
+                        withCredentials: true,
                         data: formData
                     });
                     return response.data;
