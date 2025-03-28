@@ -1,5 +1,6 @@
 package com.java.cafe.controller;
 
+import com.java.cafe.dto.BoardDTO;
 import com.java.cafe.dto.MenuDTO;
 import com.java.cafe.dto.PostDTO;
 import com.java.cafe.dto.PostResDTO;
@@ -27,7 +28,6 @@ public class CafePostController {
   @GetMapping
   public String write(@PathVariable("domain") String domain, Model model) {
     List<MenuDTO> menuList = cafeEachService.getMenuList(domain);
-    log.info("MENU : {}", menuList);
     model.addAttribute("menuList", menuList);
     model.addAttribute("domain", domain);
     return "cafeMain/write";
@@ -36,16 +36,19 @@ public class CafePostController {
   // 포스트 나 보기
   @GetMapping("/{no:[0-9]+}")
   public String read(@PathVariable("domain") String domain, @PathVariable("no") Integer no, Model model, HttpServletRequest req) {
+    BoardDTO boardDTO = cafeEachService.cafeInfo(1, domain);
+    model.addAttribute("boardDTO", boardDTO);
+    List<MenuDTO> menuList = cafeEachService.getMenuList(domain);
+    model.addAttribute("menuList", menuList);
     cafeEachService.read(domain, no, model, req);
-    System.out.println("가나다라마바사"+domain+req+no);
     return "cafeMain/post";
   }
 
   // 포스트 저장
   @PutMapping
   @ResponseBody
-  public PostResDTO writeCreate(@RequestBody PostDTO postDTO) {
-    return cafeEachService.writeCreate(postDTO);
+  public PostResDTO writeCreate(@RequestBody PostDTO postDTO, HttpServletRequest req) {
+    return cafeEachService.writeCreate(postDTO, req);
   }
 
   // 포스트 수정
@@ -59,7 +62,6 @@ public class CafePostController {
   @DeleteMapping("/{no:[0-9]+}")
   @ResponseBody
   public PostResDTO writeDelete(@PathVariable("domain") String domain, @PathVariable("no") Integer no) {
-    log.info("Post-No : {}", no);
     return cafeEachService.writeDel(no);
   }
 

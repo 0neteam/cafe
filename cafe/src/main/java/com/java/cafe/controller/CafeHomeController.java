@@ -38,8 +38,8 @@ public class CafeHomeController {
 
     @ResponseBody
     @PutMapping
-    public String createCafe(@ModelAttribute BoardDTO boardDTO) {
-        return cafeHomeService.save(boardDTO);
+    public String createCafe(@ModelAttribute BoardDTO boardDTO, HttpServletRequest req) {
+        return cafeHomeService.save(boardDTO, req);
     }
 
 }
