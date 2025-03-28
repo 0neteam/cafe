@@ -27,6 +27,7 @@ public interface CafeEachService {
     public MenuDTO createMenu(String domain, MenuDTO menuDTO);
     public MenuDTO editMenu(String domain, MenuDTO menuDTO);
     public String deleteMenu(String domain, Integer no);
+    public List<Menu> getChildList(Integer no);
 
     public List<Post> getPostList(Integer no);
     public PostResDTO writeCreate(PostDTO postDTO, HttpServletRequest req);

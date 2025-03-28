@@ -160,6 +160,11 @@ public class CafeEachServiceImp implements CafeEachService {
     }
 
     @Override
+    public List<Menu> getChildList(Integer no) {
+        return menuRepository.findByRefAndUseYN(no, 'Y');
+    }
+
+    @Override
     public List<Post> getPostList(Integer no) {
         return postRepository.findByMenuNoAndUseYN(no, 'Y');
     }
@@ -216,7 +221,7 @@ public class CafeEachServiceImp implements CafeEachService {
                     .build();
         }
         Integer menuNo = postDTO.getMenuNo(); 
-        List<Post> postList = postRepository.findAllByMenuNoAndUseYN(menuNo, 'Y');
+        List<Post> postList = postRepository.findAllByMenuNoAndUseYNOrderByRegDate(menuNo, 'Y');
         List<Integer> postNoList = postList.stream()
                                .map(Post::getNo)
                                .collect(Collectors.toList());

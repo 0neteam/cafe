@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @AllArgsConstructor
@@ -25,10 +27,27 @@ public class CafeDomainController {
   @GetMapping
   public String route(@PathVariable String domain, Model model){
     BoardDTO boardDTO = cafeEachService.cafeInfo(1, domain);
+    
     String checkDomain = boardDTO.getDomain();
     model.addAttribute("boardDTO", boardDTO);
     List<MenuDTO> menuList = cafeEachService.getMenuList(domain);
+    
     model.addAttribute("menuList", menuList);
+    List<Integer> menuNoList = menuList.stream()
+                               .map(MenuDTO::getNo)
+                               .collect(Collectors.toList());
+    
+    List<Post> postList = new ArrayList<>();
+    for (Integer child : menuNoList) {
+      List<Menu> menus = cafeEachService.getChildList(child);
+      if (menuList != null) {
+        Menu menu = menus.get(0);
+        postList.addAll(cafeEachService.getPostList(menu.getNo()));
+        } else {
+        System.out.println("비었어용");
+        }
+    }
+    model.addAttribute("postList", postList);
     if (domain.equals(checkDomain)) {
       return "cafeMain/cafeHome";
     }
