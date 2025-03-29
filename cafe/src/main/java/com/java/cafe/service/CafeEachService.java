@@ -18,14 +18,14 @@ import java.util.Optional;
 public interface CafeEachService {
 
     public Board save(Board board);
-    public Optional<Board> cafeBaseInfo(Integer type, String domain);
+    public String cafeBaseInfo(String domain);
     public String infoEdit(String domain, BoardDTO boardDTO);
     public String cafeInfo(String domain, Model model); //카페 가입정보
 
     public List<MenuDTO> getMenuList(String domain, Model model);
     public Menu getMenu(Integer no, Model model);
-    public MenuDTO createMenu(String domain, MenuDTO menuDTO);
-    public MenuDTO editMenu(String domain, MenuDTO menuDTO);
+    public String createMenu(String domain, MenuDTO menuDTO);
+    public String editMenu(String domain, MenuDTO menuDTO);
     public String deleteMenu(String domain, Integer no);
     public List<Menu> getChildList(Integer no);
 

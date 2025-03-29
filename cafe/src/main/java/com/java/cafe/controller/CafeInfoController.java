@@ -33,15 +33,7 @@ public class CafeInfoController {
   @DeleteMapping
   @ResponseBody
   public String delCafe(@PathVariable("domain") String domain) {
-    try {
-      Board board = cafeEachService.cafeBaseInfo(1, domain)
-              .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시판입니다: domain=" + domain));
-      board.setUseYN('N');
-      cafeEachService.save(board);
-      return "success";
-    } catch (Exception e) {
-      return "fail";
-    }
+    return cafeEachService.cafeBaseInfo(domain);
   }
 
 }

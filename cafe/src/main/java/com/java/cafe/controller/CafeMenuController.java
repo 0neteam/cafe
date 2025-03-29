@@ -28,33 +28,21 @@ public class CafeMenuController {
   @PutMapping
   @ResponseBody
   public String createMenu(@PathVariable String domain, @RequestBody MenuDTO menuDTO) {
-    if (cafeEachService.createMenu(domain, menuDTO) != null){
-      return "success";
-    } else{
-      return "fail";
-    }
+    return cafeEachService.createMenu(domain, menuDTO);
   }
 
   // 메뉴 수정
   @PatchMapping
   @ResponseBody
   public String editMenu(@PathVariable String domain, @RequestBody MenuDTO menuDTO) {
-    if (cafeEachService.editMenu(domain, menuDTO) != null){
-      return "success";
-    } else{
-      return "fail";
-    }
+    return cafeEachService.editMenu(domain, menuDTO);
   }
 
   // 메뉴 삭제
   @DeleteMapping("/{no:[0-9]+}")
   @ResponseBody
   public String deleteMenu(@PathVariable String domain, @PathVariable("no") Integer no) {
-    if (cafeEachService.deleteMenu(domain, no) != null){
-      return "success";
-    } else {
-      return "fail";
-    }
+    return cafeEachService.deleteMenu(domain, no);
   }
 
 }
