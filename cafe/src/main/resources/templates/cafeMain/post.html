@@ -42,11 +42,20 @@
         }
     </style>
     <script th:inline="javascript">
+
         $(document).ready(() => {
+
+            $("#delete").on("click", () => {
+                location.reload();
+            })
+
             $("#edit").on("click", () => {
                 editor.readOnly.toggle();
                 $("#edit").addClass("d-none");
                 $("#save").removeClass("d-none");
+
+                $("#reset").addClass("d-none");
+                $("#delete").removeClass("d-none");
 
                 $("#r-title").addClass("d-none");
                 $("#title").removeClass("d-none");
@@ -205,30 +214,44 @@
 <body th:attr="data-domain=${domain}">
 <main layout:fragment="content" class="container-fluid" style="min-height: 50vh;">
     <div class="container my-2">
-        <div class="d-flex justify-content-end mb-3">
-            <a class="btn btn-outline-secondary me-2" th:href="@{'/' + ${domain} + '/post/' + ${beforeIndex}}" th:if="${beforeIndex}!=0">이전글</a>
-            <a class="btn btn-outline-secondary me-2" th:href="@{'/' + ${domain} + '/' + ${post.menuNo}}">목록</a>
-            <a class="btn btn-outline-secondary" th:href="@{'/' + ${domain} + '/post/' + ${nextIndex}}" th:if="${nextIndex}!=0">다음글</a>
+        <div class="d-flex justify-content-between mb-3">
+            <div>
+                <a class="btn btn-outline-secondary me-2" th:href="@{'/' + ${domain} + '/post/' + ${beforeIndex}}" th:if="${beforeIndex}!=0">이전글</a>
+                <a class="btn btn-outline-secondary me-2" th:href="@{'/' + ${domain} + '/post/' + ${nextIndex}}" th:if="${nextIndex}!=0">다음글</a>
+                <a class="btn btn-outline-secondary" th:href="@{'/' + ${domain} + '/' + ${post.menuNo}}">목록</a>
+            </div>
+            <div>
+                <button th:if="${loginUser}==${post.regUserNo}" class="btn btn-sm btn-success me-2" id="edit">수정</button>
+                <button class="btn btn-sm btn-success me-2 d-none" id="save">저장</button>
+                <button th:if="${loginUser}==${post.regUserNo}" class="btn btn-sm btn-danger" id="delete">삭제</button>
+                <button class="btn btn-sm btn-secondary me-2 d-none" id="reset">취소</button>
+            </div>
         </div>
         <div class="card mb-3">
             <div class="card-body">
                 <p class="text-muted small mb-1" th:text="${post.menuName}"></p>
                 <input type="hidden" name="menuNo" id="menuNo" th:value="${post.menuNo}" />
-                <!-- <h4 class="card-title">글 제목</h4> -->
                 <h4 class="card-title" th:text="${post.title}" id="r-title"></h4>
                 <input class="d-none" type="text" name="title" id="title" th:value="${post.title}" required />
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <p class="text-muted small mb-0">작성자 <span th:text="${post.regName}"></span> | <span th:text="${post.regDate}"></span> | 조회수 <span th:text="${post.viewCount}"></span></p>
-                    <div>
-                        <p th:text="${post.regUserNo}"></p>
-                        <button th:if="${loginUser}==${post.regUserNo}" class="btn btn-sm btn-success me-2" id="edit">수정</button>
-                        <button class="btn btn-sm btn-success me-2 d-none" id="save">저장</button>
-                        <button th:if="${loginUser}==${post.regUserNo}" class="btn btn-sm btn-danger" id="delete">삭제</button>
-                    </div>
                 </div><hr>
                 <div class="mb-4">
                     <div id="editorjs"></div>
                 </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-between mb-3">
+            <div>
+                <a class="btn btn-outline-secondary me-2" th:href="@{'/' + ${domain} + '/post/' + ${beforeIndex}}" th:if="${beforeIndex}!=0">이전글</a>
+                <a class="btn btn-outline-secondary me-2" th:href="@{'/' + ${domain} + '/post/' + ${nextIndex}}" th:if="${nextIndex}!=0">다음글</a>
+                <a class="btn btn-outline-secondary" th:href="@{'/' + ${domain} + '/' + ${post.menuNo}}">목록</a>
+            </div>
+            <div>
+                <button th:if="${loginUser}==${post.regUserNo}" class="btn btn-sm btn-success me-2" id="edit">수정</button>
+                <button class="btn btn-sm btn-success me-2 d-none" id="save">저장</button>
+                <button th:if="${loginUser}==${post.regUserNo}" class="btn btn-sm btn-danger" id="delete">삭제</button>
+                <button class="btn btn-sm btn-secondary me-2 d-none" id="reset">취소</button>
             </div>
         </div>
     </div>
