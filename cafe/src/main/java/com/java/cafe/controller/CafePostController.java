@@ -27,19 +27,15 @@ public class CafePostController {
   // 포스트 작성 화면
   @GetMapping
   public String write(@PathVariable("domain") String domain, Model model) {
-    List<MenuDTO> menuList = cafeEachService.getMenuList(domain);
-    model.addAttribute("menuList", menuList);
-    model.addAttribute("domain", domain);
+    cafeEachService.getMenuList(domain, model);
     return "cafeMain/write";
   }
 
   // 포스트 나 보기
   @GetMapping("/{no:[0-9]+}")
   public String read(@PathVariable("domain") String domain, @PathVariable("no") Integer no, Model model, HttpServletRequest req) {
-    BoardDTO boardDTO = cafeEachService.cafeInfo(1, domain);
-    model.addAttribute("boardDTO", boardDTO);
-    List<MenuDTO> menuList = cafeEachService.getMenuList(domain);
-    model.addAttribute("menuList", menuList);
+    cafeEachService.cafeInfo(domain, model);
+    cafeEachService.getMenuList(domain, model);
     cafeEachService.read(domain, no, model, req);
     return "cafeMain/post";
   }
@@ -61,7 +57,7 @@ public class CafePostController {
   // 포스트 삭제
   @DeleteMapping("/{no:[0-9]+}")
   @ResponseBody
-  public PostResDTO writeDelete(@PathVariable("domain") String domain, @PathVariable("no") Integer no) {
+  public PostResDTO writeDelete(@PathVariable("no") Integer no) {
     return cafeEachService.writeDel(no);
   }
 

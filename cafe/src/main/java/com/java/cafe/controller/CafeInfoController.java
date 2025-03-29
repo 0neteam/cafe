@@ -18,8 +18,7 @@ public class CafeInfoController {
   // 카페 기본정보 수정페이지
   @GetMapping
   public String baseInfo(@PathVariable("domain") String domain, Model model){
-    BoardDTO boardDTO = cafeEachService.cafeInfo(1, domain);
-    model.addAttribute("boardDTO", boardDTO);
+    cafeEachService.cafeInfo(domain, model);
     return "cafeMain/cafeManage";
   }
 
@@ -27,19 +26,7 @@ public class CafeInfoController {
   @PatchMapping
   @ResponseBody
   public String baseInfoEdit(@PathVariable("domain") String domain, @ModelAttribute BoardDTO boardDTO){
-    try {
-      Board board = cafeEachService.cafeBaseInfo(1, domain)
-          .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시판입니다: domain=" + domain));
-
-      board.setName(boardDTO.getName());
-      board.setDomain(boardDTO.getDomain());
-      board.setDescription(boardDTO.getDescription());
-
-      cafeEachService.save(board);
-      return "success";
-    } catch (Exception e) {
-      return "fail";
-    }
+    return cafeEachService.infoEdit(domain, boardDTO);
   }
 
   // 카페 삭제
@@ -48,7 +35,7 @@ public class CafeInfoController {
   public String delCafe(@PathVariable("domain") String domain) {
     try {
       Board board = cafeEachService.cafeBaseInfo(1, domain)
-          .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시판입니다: domain=" + domain));
+              .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시판입니다: domain=" + domain));
       board.setUseYN('N');
       cafeEachService.save(board);
       return "success";
