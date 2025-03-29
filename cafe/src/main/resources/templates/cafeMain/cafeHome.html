@@ -41,7 +41,7 @@
                             <td>
                                 <a th:text="${post.title}" th:href="@{'/' + ${boardDTO.domain} + '/post/' + ${post.no}}"></a>
                             </td>
-                            <td class="text-end" th:text="${post.regUserNo}"></td>
+                            <td class="text-end" th:text="${post.user.name}"></td>
                             <td class="text-end" th:text="${post.regDate}"></td>
                         </tr>
                     </tbody>

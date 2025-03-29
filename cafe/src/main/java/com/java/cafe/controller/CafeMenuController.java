@@ -19,10 +19,8 @@ public class CafeMenuController {
 
   @GetMapping
   public String getMenuList(@PathVariable String domain, Model model) {
-    BoardDTO boardDTO = cafeEachService.cafeInfo(1, domain);
-    model.addAttribute("boardDTO", boardDTO);
-    List<MenuDTO> menuList = cafeEachService.getMenuList(domain);
-    model.addAttribute("menuList", menuList);
+    cafeEachService.cafeInfo(domain, model);
+    cafeEachService.getMenuList(domain, model);
     return "cafeMain/menuManage";
   }
 
