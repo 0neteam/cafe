@@ -28,7 +28,7 @@
         body {margin: 0; padding: 0;}
         main {margin: 50px 10vw 0;}
         #title {margin: 10px 0;}
-        #editorjs {background-color: #d3e3fd; min-height: 40vh;}
+        #editorjs {background-color: #f3f3f3; min-height: 40vh;}
         .ce-block__content {
             max-width: 100% !important;
             padding: 0 20px;
@@ -64,7 +64,6 @@
                         }).then(res => {
                             if(res.data.status === 'success') {
                                 console.log(res);
-                                //editor.readOnly.toggle();
                                 document.location.href = url + "/" + res.data.no;
                             }
                         }).catch(err => console.log(err));
@@ -102,7 +101,7 @@
                 tools: {
                     paragraph: {
                         class: Paragraph,
-                        config: {placeholder: '내용을 입력하세요.'},
+                        config: {placeholder: '본문을 입력하세요.'},
                         inlineToolbar: true
                     },
                     header: {
@@ -176,12 +175,12 @@
 <main layout:fragment="content2">
     <div class="container my-2">
         <div class="d-flex justify-content-between align-items-center my-4">
-            <h2 class="mb-0">글쓰기</h2>
+            <h2 class="mb-0">글 작성</h2>
         </div>
-        <!-- <form th:action="@{|/write/save|}" method="post" th:object="${postDTO}"> -->
         <form>
             <div class="mb-3">
                 <div class="mb-3">
+                    <label for="title" class="form-label">메뉴</label>
                     <select class="form-select mt-2 ps-3" id="menuNo">
                         <option value="" disabled selected>메뉴 선택</option>
                         <!-- children -->
@@ -195,18 +194,15 @@
 
             <div class="mb-3">
                 <label for="title" class="form-label">글 제목</label>
-                <!-- <input type="text" id="title" class="form-control" th:field="*{title}" placeholder="제목을 입력하세요"> -->
                 <input type="text" id="title" class="form-control" placeholder="제목을 입력하세요">
             </div>
 
             <div class="mb-4">
-                <label for="editorjs" class="form-label">내용물</label>
-                <!-- <textarea id="content" class="form-control" rows="16" th:field="*{content}" placeholder="에디터"></textarea> -->
-                <!--                    <textarea id="content" class="form-control" rows="16" placeholder="에디터"></textarea>-->
+                <label for="editorjs" class="form-label">본문</label>
                 <div id="editorjs"></div>
             </div>
 
-            <div class="d-flex justify-content-center gap-2">
+            <div class="d-flex justify-content-end gap-2">
                 <button type="submit" class="btn btn-success">등록</button>
                 <a type="button" class="btn btn-secondary" th:href="@{'/' + ${domain}}">취소</a>
             </div>
