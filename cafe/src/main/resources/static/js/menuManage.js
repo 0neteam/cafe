@@ -38,7 +38,6 @@ $(document).ready(function() {
             })
             .then(res => {
                 if(res.data === 'success') {
-                    alert('삭제 성공');
                     menuItem.remove();
                 }
             }).catch(err => {
@@ -68,7 +67,6 @@ $(document).ready(function() {
             })
             .then(res => {
                 if(res.data === 'success') {
-                alert('추가 성공');
                 location.reload();
             }
             }).catch(err => {
@@ -97,7 +95,6 @@ $(document).ready(function() {
                 data: menuData
             }).then(res => {
                 if(res.data === 'success') {
-                    alert('추가 성공');
                     location.reload();
                 }
             }).catch(err => {
@@ -131,7 +128,6 @@ $(document).ready(function() {
                 data: menuData
             }).then(res => {
                 if(res.data === 'success') {
-                    alert('수정 성공');
                     location.reload();
                 }
             }).catch(err => {

@@ -43,8 +43,17 @@ public class CafeEachServiceImp implements CafeEachService {
 
     // 카페 기본정보 수정페이지에 기본 정보 보이기
     @Override
-    public Optional<Board> cafeBaseInfo(Integer type, String domain){
-        return boardRepository.findByTypeAndDomain(type, domain);
+    public String cafeBaseInfo(String domain){
+        Integer type = 1;
+        try {
+            Board board = boardRepository.findByTypeAndDomain(type, domain)
+                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시판입니다: domain=" + domain));
+            board.setUseYN('N');
+            boardRepository.save(board);
+            return "success";
+        } catch (Exception e) {
+            return "fail";
+        }
     }
 
     @Override
@@ -132,54 +141,65 @@ public class CafeEachServiceImp implements CafeEachService {
 
     // 메뉴 생성
     @Override
-    public MenuDTO createMenu(String domain, MenuDTO menuDTO) {
+    public String createMenu(String domain, MenuDTO menuDTO) {
+        try {
+            Optional<Board> boardSelect = boardRepository.findByTypeAndDomain(1, domain);
+            if (boardSelect.isEmpty()) {
+                throw new IllegalArgumentException("Board not found for domain: " + domain);
+            }
+            Board board = boardSelect.get();
 
-        Optional<Board> boardSelect = boardRepository.findByTypeAndDomain(1, domain);
-        if (boardSelect.isEmpty()) {
-            throw new IllegalArgumentException("Board not found for domain: " + domain);
+            Integer orderNo = (menuRepository.countByBoardNoAndRef(board.getNo(), menuDTO.getRef())) + 1;
+
+            Menu menu = Menu.builder()
+                    .board(board)
+                    .orderNo(orderNo)
+                    .depth(menuDTO.getDepth())
+                    .name(menuDTO.getName())
+                    .ref(menuDTO.getRef())
+                    .useYN('Y')
+                    .build();
+            menuRepository.save(menu);
+            return "success";
+        } catch (Exception e) {
+            return "fail";
         }
-        Board board = boardSelect.get();
-
-        Integer orderNo = (menuRepository.countByBoardNoAndRef(board.getNo(), menuDTO.getRef())) + 1;
-
-        Menu menu = Menu.builder()
-                .board(board)
-                .orderNo(orderNo)
-                .depth(menuDTO.getDepth())
-                .name(menuDTO.getName())
-                .ref(menuDTO.getRef())
-                .useYN('Y')
-                .build();
-        menuRepository.save(menu);
-        return menuDTO;
     }
 
     // 메뉴 수정
     @Override
-    public MenuDTO editMenu(String domain, MenuDTO menuDTO) {
-        Optional<Board> boardSelect = boardRepository.findByTypeAndDomain(1, domain);
-        if (boardSelect.isEmpty()) {
-            throw new IllegalArgumentException("Board not found for domain: " + domain);
+    public String editMenu(String domain, MenuDTO menuDTO) {
+        try {
+            Optional<Board> boardSelect = boardRepository.findByTypeAndDomain(1, domain);
+            if (boardSelect.isEmpty()) {
+                throw new IllegalArgumentException("Board not found for domain: " + domain);
+            }
+            Board board = boardSelect.get();
+            Menu menu = menuRepository.findById(menuDTO.getNo())
+                    .orElseThrow(() -> new RuntimeException("Menu not found"));
+            Integer orderNo = (menuRepository.countByBoardNoAndRef(board.getNo(), menuDTO.getRef())) + 1;
+            menu.setName(menuDTO.getName());
+            menu.setOrderNo(orderNo);
+            menu.setRef(menuDTO.getRef());
+            menuRepository.save(menu);
+            return "success";
+        } catch (Exception e) {
+            return "fail";
         }
-        Board board = boardSelect.get();
-        Menu menu = menuRepository.findById(menuDTO.getNo())
-                .orElseThrow(() -> new RuntimeException("Menu not found"));
-        Integer orderNo = (menuRepository.countByBoardNoAndRef(board.getNo(), menuDTO.getRef())) + 1;
-        menu.setName(menuDTO.getName());
-        menu.setOrderNo(orderNo);
-        menu.setRef(menuDTO.getRef());
-        menuRepository.save(menu);
-        return menuDTO;
     }
 
     // 메뉴 삭제
     @Override
     public String deleteMenu(String domain, Integer no) {
-        Menu menu = menuRepository.findById(no)
-                .orElseThrow(() -> new RuntimeException("Menu not found"));
-        menu.setUseYN('N');
-        menuRepository.save(menu);
-        return "success";
+        try {
+            Menu menu = menuRepository.findById(no)
+                    .orElseThrow(() -> new RuntimeException("Menu not found"));
+            menu.setUseYN('N');
+            menuRepository.save(menu);
+            return "success";
+        } catch (Exception e) {
+            return "fail";
+        }
     }
 
     @Override
