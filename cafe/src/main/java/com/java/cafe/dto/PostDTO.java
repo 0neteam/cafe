@@ -1,10 +1,6 @@
 package com.java.cafe.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.java.cafe.entity.Menu;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.*;
 
 import java.time.LocalDateTime;

@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,5 +43,4 @@ public class Menu {
     @JoinColumn(name = "ref")
     @OrderBy("orderNo asc")
     private List<Menu> children = new ArrayList<>();
-    
 }
