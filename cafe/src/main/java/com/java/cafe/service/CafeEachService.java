@@ -6,14 +6,10 @@ import com.java.cafe.dto.PostDTO;
 import com.java.cafe.dto.PostResDTO;
 import com.java.cafe.entity.Board;
 import com.java.cafe.entity.Menu;
-
 import com.java.cafe.entity.Post;
 import jakarta.servlet.http.HttpServletRequest;
-
 import org.springframework.ui.Model;
-
 import java.util.List;
-import java.util.Optional;
 
 public interface CafeEachService {
 

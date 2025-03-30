@@ -127,8 +127,27 @@ public class CafeEachServiceImp implements CafeEachService {
                     filteredChildren // 필터링된 children 리스트
             ));
         }
+
+        List<Integer> menuNoList = filterMenus.stream()
+                .map(MenuDTO::getNo)
+                .collect(Collectors.toList());
+ 
         model.addAttribute("menuList", filterMenus);
         model.addAttribute("domain", domain);
+        System.out.println("여기~~"+menuNoList);
+
+        List<Post> postList = new ArrayList<>();
+        for (Integer child : menuNoList) {
+            List<Menu> menus1 = getChildList(child);
+            if (filterMenus != null) {
+                Menu menu = menus1.get(0);
+                postList.addAll(getPostList(menu.getNo(), model));
+            } else {
+                System.out.println("비었어용");
+            }
+        }
+        model.addAttribute("postList", postList);
+
         return filterMenus;
     }
 

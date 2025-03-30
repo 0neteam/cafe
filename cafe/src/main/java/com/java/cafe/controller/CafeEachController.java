@@ -1,8 +1,5 @@
 package com.java.cafe.controller;
 
-import com.java.cafe.dto.MenuDTO;
-import com.java.cafe.entity.Menu;
-import com.java.cafe.entity.Post;
 import com.java.cafe.service.CafeEachService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -10,11 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 
 @Controller
 @AllArgsConstructor
@@ -27,22 +19,7 @@ public class CafeEachController {
     @GetMapping
     public String route(@PathVariable String domain, Model model){
         cafeEachService.cafeInfo(domain, model);
-        List<MenuDTO> menuList = cafeEachService.getMenuList(domain, model);
-        List<Integer> menuNoList = menuList.stream()
-                .map(MenuDTO::getNo)
-                .collect(Collectors.toList());
-
-        List<Post> postList = new ArrayList<>();
-        for (Integer child : menuNoList) {
-            List<Menu> menus = cafeEachService.getChildList(child);
-            if (menuList != null) {
-                Menu menu = menus.get(0);
-                postList.addAll(cafeEachService.getPostList(menu.getNo(), model));
-            } else {
-                System.out.println("비었어용");
-            }
-        }
-        model.addAttribute("postList", postList);
+        cafeEachService.getMenuList(domain, model);
         if (cafeEachService.cafeInfo(domain, model)=="success") {
             return "cafeMain/cafeHome";
         }

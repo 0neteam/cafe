@@ -1,7 +1,6 @@
 package com.java.cafe.controller;
 
 import com.java.cafe.dto.BoardDTO;
-import com.java.cafe.entity.Board;
 import com.java.cafe.service.CafeEachService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
